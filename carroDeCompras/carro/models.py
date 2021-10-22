@@ -1,5 +1,6 @@
 from django.db import models
-from django.db.models.fields import EmailField
+from django.contrib.postgres.fields import ArrayField
+from django.apps import apps
 
 # Create your models here.
 class Usuario(models.Model):
@@ -21,6 +22,7 @@ class Clientes(models.Model):
         return f'Clientes: {self.direccion}, {self.telefono}'
 
 class ProductosComprados(models.Model):
+    #modelo = apps.get_model(app_label='productos', model_name='Producto')
     nombre = models.CharField(max_length=30, unique=True)
     descripcion = models.CharField(max_length=100, unique=True)
     precioVenta = models.FloatField(max_length=20)
@@ -31,7 +33,7 @@ class ProductosComprados(models.Model):
     
 class Ventas(models.Model):
     usuario = models.CharField(max_length=30, unique=True)
-    listado_de_productos = models.CharField(max_length=40)
+    listado_de_productos = ArrayField(models.CharField(max_length=30))
     fechaDeVenta = models.DateField()
     precioTotal = models.FloatField()
 
@@ -41,8 +43,8 @@ class Ventas(models.Model):
 
 class CarrosCompra(models.Model):
     usuario = models.CharField(max_length=30, unique=True)
-    listado_de_productos = models.CharField(max_length=40)
-    cantidad_de_cada_producto = models.IntegerField()
+    listado_de_productos = ArrayField(models.CharField(max_length=30))
+    cantidad_de_cada_producto = ArrayField(models.IntegerField())
     precioTotal = models.FloatField()
     
     def __str__(self) -> str:
