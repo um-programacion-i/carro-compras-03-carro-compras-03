@@ -25,8 +25,9 @@ class ProductosComprados(models.Model):
     #modelo = apps.get_model(app_label='productos', model_name='Producto')
     nombre = models.CharField(max_length=30, unique=True)
     descripcion = models.CharField(max_length=100, unique=True)
+    claveProductoOriginal = models.IntegerField()
     precioVenta = models.FloatField(max_length=20)
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(default="", editable=False)
 
     def __str__(self) -> str:
         return f'Productos Comprados: {self.nombre},{self.descripcion},{self.precioVenta},{self.cantidad}'
@@ -35,6 +36,7 @@ class Ventas(models.Model):
     usuario = models.CharField(max_length=30, unique=True)
     listado_de_productos = ArrayField(models.CharField(max_length=30))
     fechaDeVenta = models.DateField()
+    idProductoComprado = models.ForeignKey(ProductosComprados, on_delete=models.SET_NULL, null=True)
     precioTotal = models.FloatField()
 
     def __str__(self) -> str:

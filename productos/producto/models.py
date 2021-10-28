@@ -1,20 +1,21 @@
 from django.db import models
 
+
+class Distribuidor(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=100)
+    
+    def __str__(self) -> str:
+        return f'Distribuidor: {self.nombre}, {self.descripcion}'
+
 # Create your models here.
 class Producto(models.Model):
-    nombre = models.CharField(max_length=30)
-    descripcion = models.CharField(max_length=80)
+    nombre = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=100)
     precio = models.IntegerField()
-    distribuidor = models.CharField(max_length=50)
+    idDistribuidor = models.ForeignKey(Distribuidor, on_delete=models.SET_NULL, null=True)
     cantidadVendido = models.IntegerField()
 
     def __str__(self) -> str:
         return (f'Producto: {self.nombre}, {self.descripcion}, {self.precio}, '
                 f'{self.distribuidor}, {self.cantidadVendido}')
-
-class Distribuidor(models.Model):
-    nombre = models.CharField(max_length=30)
-    descripcion = models.CharField(max_length=80)
-    
-    def __str__(self) -> str:
-        return f'Distribuidor: {self.nombre}, {self.descripcion}'
