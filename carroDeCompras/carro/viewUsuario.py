@@ -47,7 +47,7 @@ def listarusuarios(req, pk):
         usuario.delete()
         return HttpResponse(status = 204)
 
-def check_user(req):
+def log_user(req):
     form = Usuario(req.POST or None)
     if form.method == 'POST':
         if form.is_valid():

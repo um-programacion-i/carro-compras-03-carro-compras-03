@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .serializer import DistribuidorSerializer
 from .models import Clientes
 from .serializer import ClienteSerializer
 from rest_framework.response import Response

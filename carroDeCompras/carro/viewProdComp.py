@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .serializer import DistribuidorSerializer
 from .models import ProductosComprados, Ventas
 from .serializer import VentasSerializer, ProductosCompradosSerializer
 from rest_framework.response import Response
@@ -10,7 +9,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 # Create your views here.
 
-@api_view(('GET'))
+@api_view(('GET',))
 @renderer_classes((JSONRenderer,))
 def getUnaCompra(req, pk):
     try:
@@ -21,7 +20,7 @@ def getUnaCompra(req, pk):
     except Ventas.DoesNotExist:
         return Response(status=404)
 
-@api_view(('GET'))
+@api_view(('GET',))
 def getTodasCompras(req):
     try:
         compras = ProductosComprados.objects.all()
