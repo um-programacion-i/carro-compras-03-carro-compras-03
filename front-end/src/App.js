@@ -1,24 +1,22 @@
-import React, {useState} from "react";
+import React from "react";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import {Login} from './components/Login'
+import {Admin} from './components/navegacion/Admin'
+import {User} from './components/navegacion/User'
+
+
 
 
 function App() {
 
-  const [user, setUser] = useState({nombre: '', email:''})
-  const [error, setError] = useState('')
-
-  const Pogin = details => {
-    console.log(details);
-  }
 
   return (
     <Router>
-      <div>
         <Switch>
           <Route path="/" component={Login} />
+          <Route path="/Admin" component={Admin} />
+          <Route path="/User" component={User} />
         </Switch>
-      </div>
     </Router>
   );
 }

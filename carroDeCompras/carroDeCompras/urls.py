@@ -20,7 +20,5 @@ from carro import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('usuario/', include(urls)),
-    path('cliente/', include(urls)),
-    path('producto/', include(urls)),
+    path('carro/', include(urls))
 ]

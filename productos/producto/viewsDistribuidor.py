@@ -32,7 +32,6 @@ def listarDistribuidor(req, pk):
     except Distribuidor.DoesNotExist:
         return HttpResponse(status=404)
     if req.method == 'GET':
-        distribuidor = Distribuidor.objects.all()
         serializer = DistribuidorSerializer(distribuidor, many=True)
         return Response(distribuidor)
     if req.method == 'PUT':

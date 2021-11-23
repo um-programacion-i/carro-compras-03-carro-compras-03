@@ -32,7 +32,6 @@ def listarClientes(req, pk):
     except Clientes.DoesNotExist:
         return HttpResponse(status=404)
     if req.method == 'GET':
-        cliente = Clientes.objects.all()
         serializer = ClienteSerializer(cliente, many=True)
         return Response(cliente)
     if req.method == 'PUT':

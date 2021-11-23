@@ -29,13 +29,13 @@ def usuario_list(req):
 @renderer_classes((JSONRenderer,))
 def listarusuarios(req, pk):
     try:
-        usuario = Usuario.objects.get(pk=pk)
+        usuario = [Usuario.objects.get(pk=pk)]
     except Usuario.DoesNotExist:
         return HttpResponse(status=404)
     if req.method == 'GET':
-        usuario = Usuario.objects.all()
+        #usuario = Usuario.objects.all()
         serializer = UsuarioSerializer(usuario, many=True)
-        return Response(usuario)
+        return JsonResponse(serializer.data[0], status=200, safe=False)
     if req.method == 'PUT':
         data = JSONParser().parse(req)
         serializer = UsuarioSerializer(usuario,data=data)
@@ -47,11 +47,16 @@ def listarusuarios(req, pk):
         usuario.delete()
         return HttpResponse(status = 204)
 
+@api_view(('POST', ))
 def log_user(req):
-    form = Usuario(req.POST or None)
-    if form.method == 'POST':
-        if form.is_valid():
-            user = authenticate(username = form.cleaned_data['username'], password = form.cleaned_data['password'], tipo = form.cleaned_data['tipo'])
-            if user is not None:
-                return Response(status=200)
-    return Response(status=404)
+    if req.method == 'POST':
+        data = JSONParser().parse(req)
+        for values in data.values():
+            nombre = values['nombre']
+            clave = values['clave']
+        if Usuario.objects.filter(nombre=nombre, clave=clave).exists():
+            user = [Usuario.objects.get(nombre=nombre)]
+            serializer = UsuarioSerializer(user, many=True)
+            print(type(user))
+            return JsonResponse(serializer.data[0], status=200, safe=False)
+        return HttpResponse('No existe')

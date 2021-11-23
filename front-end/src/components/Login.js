@@ -1,43 +1,78 @@
 import React, {useState} from "react";
+import {useHistory} from "react-router-dom"
+import {withRouter} from "react-router-dom"
 import "../cssStyles/Login.css"
 import axios from 'axios'
+import {Admin} from '../components/navegacion/Admin'
+import {User} from '../components/navegacion/User'
 
 
 
 export const Login = () => {
     const urlCDC = process.env.REACT_APP_CDC
 
-    const [user, setUser] = useState({nombre: "", clave:""})
-    const [tipo, setTipo] = useState("")
+    const history = useHistory()
 
-    const handleChange = e => {
-        setUser(e.target.value)
-        console.log(user)
+    const [user, setUser] = useState(
+        {
+          nombre: "",
+          clave: "",
+        }
+      )
+    
+    const clickHandler = (admin) => {
+        if(admin === false){
+            console.log('asfasfasfasfasfasf')
+            history.push('/'+User)
+        }else{
+            history.push('/'+Admin)
+        }
     }
-
-    const log = async () => {
-        await axios.get(urlCDC+'/user', {params: {nombre: user.nombre, clave: user.clave}})
+    
+    const log = async (e) => {
+        console.log('nombre',user.nombre)
+        console.log('clave',user.clave)
+        await axios.post(urlCDC+'/carro/log/', {params: {nombre: user.nombre, clave: user.clave}})
         .then(response => {
-            console.log(response.data)
+            if(response.data.tipo === true){
+                console.log(response.data)
+                window.location = "http://localhost:3000/"+Admin
+                // clickHandler(true)
+                // console.log('asfasfasfasfsaf')
+            }
+            else if (response.data.tipo === false){
+                console.log(response.data)
+                clickHandler(false)
+                // window.location = "http://localhost:3000/"+User+"/";
+                history.push('/User')
+            }
+            else if(response.data === 'No existe'){
+                console.log(response.data)
+                alert('Usuario o contraseña incorrecta')
+            }
         })
     }
 
-    const handleChangeTipo = e => {
-        setTipo({
-            value: e.target.value
-        })
-        console.log(e.target.value)
-    }
 
-    const handleButton = () => {
-        console.log(urlCDC)
-    }
+
+    /*const log2 = async(e) => {
+        const res = await fetch(`{$urlCDC}/carro/log/`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user.nombre,
+                user.clave
+            })
+        })
+        const data = await res.json()
+        console.log(data)
+    }*/
 
     return(
             <React.Fragment>
                 <section className="vh-100 gradient-custom">
-                    <div className="container py-5 h-100">
-                        <div className="row d-flex justify-content-center align-items-center h-100">
                         <div className="col-12 col-md-8 col-lg-6 col-xl-5">
                             <div
                             className="card bg-dark text-white"
@@ -50,11 +85,12 @@ export const Login = () => {
                                 </p>
                                 <div className="form-outline form-white mb-4">
                                     <input
-                                    onChange={handleChange}
                                     type="text"
                                     className="form-control form-control-lg"
                                     name="nombre"
                                     placeholder="Nombre"
+                                    formMethod='POST'
+                                    onChange={e => setUser({...user, nombre: e.target.value})}
                                     />
                                 </div>
                                 <div className="form-outline form-white mb-4">
@@ -63,49 +99,22 @@ export const Login = () => {
                                     className="form-control form-control-lg"
                                     name="password"
                                     placeholder="Password"
-                                    onChange={handleChange}
+                                    formMethod='POST'
+                                    onChange={e => setUser({...user, clave: e.target.value})}
                                     />
                                 </div>
-                                <p>Tipo de usuario</p>
-                                <form/>
-                                    <div className="radio">
-                                        <label defaultValue="admin">
-                                            <input
-                                             type="radio"
-                                             value="Admin"
-                                             name="Admin"
-                                             checked={tipo.value === "Admin"}
-                                             onChange={handleChangeTipo}
-                                             />
-                                             Admin
-                                        </label>
-                                    </div>
-                                    <div className="radio">
-                                        <label defaultValue="User">
-                                            <input
-                                             type="radio"
-                                             value="User"
-                                             name="User"
-                                             checked={tipo.value === "User"}
-                                             onChange={handleChangeTipo}
-                                             />
-                                             User
-                                        </label>
-                                    </div>
                                 <button
                                     className="btn btn-outline-light btn-lg px-5"
                                     type="submit"
                                     onClick={log}
+                                    // onClick={handleClick}
                                 >
                                     Login
                                 </button>
-                                </div>
-                                
+                            </div>
                             </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
                 </section>
             </React.Fragment>
         )
