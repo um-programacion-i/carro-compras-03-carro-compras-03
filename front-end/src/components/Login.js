@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom"
-import {withRouter} from "react-router-dom"
 import "../cssStyles/Login.css"
 import axios from 'axios'
 import {Admin} from '../components/navegacion/Admin'
@@ -20,13 +19,8 @@ export const Login = () => {
         }
       )
     
-    const clickHandler = (admin) => {
-        if(admin === false){
-            console.log('asfasfasfasfasfasf')
-            history.push('/'+User)
-        }else{
-            history.push('/'+Admin)
-        }
+    const clickHandler = () => {
+        history.push('/Admin');
     }
     
     const log = async (e) => {
@@ -36,9 +30,9 @@ export const Login = () => {
         .then(response => {
             if(response.data.tipo === true){
                 console.log(response.data)
-                window.location = "http://localhost:3000/"+Admin
+                history.push('/Admin');
                 // clickHandler(true)
-                // console.log('asfasfasfasfsaf')
+                console.log('asfasfasfasfsaf')
             }
             else if (response.data.tipo === false){
                 console.log(response.data)
@@ -107,7 +101,6 @@ export const Login = () => {
                                     className="btn btn-outline-light btn-lg px-5"
                                     type="submit"
                                     onClick={log}
-                                    // onClick={handleClick}
                                 >
                                     Login
                                 </button>

@@ -3,6 +3,6 @@ import React from 'react'
 
 export const Admin = () => {
     return (
-    <h1>Hello World</h1>
+        <h1>Hello World</h1>
         )
 }
