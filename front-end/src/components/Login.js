@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import {useHistory} from "react-router-dom"
 import "../cssStyles/Login.css"
 import axios from 'axios'
-import {Admin} from '../components/navegacion/Admin'
-import {User} from '../components/navegacion/User'
+
 
 
 
