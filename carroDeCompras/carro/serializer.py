@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CarrosCompra, Clientes, Usuario, ProductosComprados, Ventas
+from .models import CarrosCompra, Usuario, ProductosComprados, Ventas
 
 
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
@@ -9,17 +9,12 @@ class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
                   'clave', 'tipo']
             
 
-class ClienteSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Clientes
-        fields = ['direccion', 'telefono']
-
 
 class ProductosCompradosSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProductosComprados
         fields = ['nombre', 'descripcion', 'claveProductoOriginal',
-                  'precioVenta', 'cantidad']
+                  'precioVenta', 'cantidad', 'usuario']
 
 
 class VentasSerializer(serializers.HyperlinkedModelSerializer):
@@ -32,5 +27,5 @@ class VentasSerializer(serializers.HyperlinkedModelSerializer):
 class CarrosCompraSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CarrosCompra
-        fields = ['usuario', 'listado_de_productos', 
-                  'cantidad_de_cada_producto', 'precioTotal']
+        fields = ['usuario', 'producto', 
+                  'cantidad_de_producto', 'precioTotal']
