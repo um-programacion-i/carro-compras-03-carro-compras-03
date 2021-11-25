@@ -6,5 +6,7 @@ urlpatterns = [
     path('distribuidores/', distribuidor_list),
     path('tomar_uno_dist/<int:pk>/', listarDistribuidor),
     path('productos/', productos_list),
+    path('post/', post),
     path('tomar_uno_prod/<int:pk>/', listarProductos),
+    path('cambiarestado/<int:pk>/' , cambiarEstado)
 ]

@@ -18,25 +18,15 @@ export const Login = () => {
         }
       )
     
-    const clickHandler = () => {
-        history.push('/Admin');
-    }
-    
     const log = async (e) => {
-        console.log('nombre',user.nombre)
-        console.log('clave',user.clave)
         await axios.post(urlCDC+'/carro/log/', {params: {nombre: user.nombre, clave: user.clave}})
         .then(response => {
             if(response.data.tipo === true){
                 console.log(response.data)
                 history.push('/Admin');
-                // clickHandler(true)
-                console.log('asfasfasfasfsaf')
             }
             else if (response.data.tipo === false){
                 console.log(response.data)
-                clickHandler(false)
-                // window.location = "http://localhost:3000/"+User+"/";
                 history.push('/User')
             }
             else if(response.data === 'No existe'){
@@ -45,23 +35,6 @@ export const Login = () => {
             }
         })
     }
-
-
-
-    /*const log2 = async(e) => {
-        const res = await fetch(`{$urlCDC}/carro/log/`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user.nombre,
-                user.clave
-            })
-        })
-        const data = await res.json()
-        console.log(data)
-    }*/
 
     return(
             <React.Fragment>

@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'productos.urls'
@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME' : 'productos',
         'USER': 'postgres',
-        'PASSWORD': '2365',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432'
     }
