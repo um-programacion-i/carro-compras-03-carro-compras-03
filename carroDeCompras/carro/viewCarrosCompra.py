@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
+
 @api_view(('GET', 'POST'))
 # Lista todos los items agregados al carrito
 def carritoList(req):
@@ -18,7 +19,7 @@ def carritoList(req):
         carrito = CarrosCompra.objects.all()
         serializer = CarrosCompraSerializer(carrito, many=True)
         return JsonResponse(serializer.data, safe=False)
-    
+
     if req.method == 'POST':
         data = JSONParser().parse(req)
         serializer = CarrosCompraSerializer(data=data)
@@ -28,7 +29,6 @@ def carritoList(req):
         return HttpResponse(status=204)
 
 
-
 @api_view(('GET', 'PUT', 'DELETE'))
 @renderer_classes((JSONRenderer,))
 def un_carrito(req, pk):
@@ -36,7 +36,7 @@ def un_carrito(req, pk):
         carrito = [CarrosCompra.objects.get(pk=pk)]
     except CarrosCompra.DoesNotExist:
         return HttpResponse(status=404)
-    
+
     if req.method == 'GET':
         serializer = CarrosCompraSerializer(carrito, many=True)
         return JsonResponse(serializer.data[0], status=200, safe=False)
@@ -48,7 +48,7 @@ def un_carrito(req, pk):
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     elif req.method == 'DELETE':
         carrito.delete()
         return HttpResponse(status=204)
