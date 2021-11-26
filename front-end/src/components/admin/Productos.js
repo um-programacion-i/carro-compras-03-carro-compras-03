@@ -1,10 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-// import {Link} from 'react-router-dom'
+import Cookies from 'universal-cookie'
+import {useHistory} from "react-router-dom"
+
 
 export const Productos = () => {
 
     const urlPROD = process.env.REACT_APP_PROD
+
+    const history = useHistory()
+
+    const cookies = new Cookies()
 
     const [productos, setProductos] = useState({
         nombre : "",
@@ -19,7 +25,26 @@ export const Productos = () => {
 
     const [id, setId] = useState('')
 
-    const [estado, setEstado] = useState('')
+    const checkLogin = () => {
+
+        // Este primer if chequea si el usuario logeado con exito es un admin o un user,
+        // de ser este ultimo se lo redirige hacia su url correspondiente, si no se queda
+        // en la que esta situado
+
+        if(cookies.get('nombre')){
+            if(cookies.get('tipo') === 'false'){
+                history.push('/User');
+            }
+        }
+        if(!cookies.get('nombre')){
+            history.push('./');
+            }
+        }
+    
+
+    useEffect(() => {
+        checkLogin()
+    })
 
     const borrarProd = async(id) => {
         const borrar = window.confirm('Borrar?')
@@ -47,7 +72,7 @@ export const Productos = () => {
     const getProductos = async() => {
         await axios.get(urlPROD+'/producto/productos/')
         .then(response => {
-            setlistaProd(response.data)
+            setlistaProd(response.data.sort((a, b) => a.id - b.id))
         })
     }
 
@@ -61,7 +86,7 @@ export const Productos = () => {
         console.log(productos)
 
         if (!editar){
-            await axios.post('http://localhost:8001/producto/post/', 
+            await axios.post(urlPROD+'/producto/postProducto/', 
                    {nombre: productos.nombre, 
                    descripcion: productos.descripcion,
                    precio: productos.precio,
@@ -91,13 +116,13 @@ export const Productos = () => {
     }
 
     const cambiarEstado = async(id) => {
-        await axios.put(urlPROD+'/producto/cambiarestado/'+id+'/')
+        await axios.put(urlPROD+'/producto/cambiarestadoProd/'+id+'/')
         await getProductos()
     }
 
     return (
         <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-3">
                 <form className="card card-body" action='/producto/productos/'>
                     <div className="form-group">
                         <input
@@ -144,7 +169,7 @@ export const Productos = () => {
                     </button>
                 </form>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-4">
                     <table className="table table-striped">
                         <thead>
                             <tr>
@@ -161,13 +186,13 @@ export const Productos = () => {
                         <tbody>
                             {listaProd.map(prod => (
                                 <tr key={prod.id}>
-                                    <td>${prod.id}</td>
-                                    <td>${prod.nombre}</td>
-                                    <td>${prod.descripcion}</td>
-                                    <td>${prod.precio}</td>
-                                    <td>${prod.idDistribuidor}</td>
-                                    <td>${prod.cantidadVendido}</td>
-                                    <td>${prod.disponible.toString()}</td>
+                                    <td>{prod.id}</td>
+                                    <td>{prod.nombre}</td>
+                                    <td>{prod.descripcion}</td>
+                                    <td>{prod.precio}</td>
+                                    <td>{prod.idDistribuidor}</td>
+                                    <td>{prod.cantidadVendido}</td>
+                                    <td>{prod.disponible.toString()}</td>
                                     <td>
                                         <button
                                         className="btn btn-secondary btn-sm btn-block"

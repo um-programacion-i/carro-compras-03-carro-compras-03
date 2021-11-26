@@ -60,3 +60,16 @@ def log_user(req):
             print(type(user))
             return JsonResponse(serializer.data[0], status=200, safe=False)
         return HttpResponse('No existe')
+
+@api_view(('PUT',))
+def cambiarEstadoUsuario(req, pk):
+    usuario = Usuario.objects.filter(pk=pk)
+    print(pk)
+    for user in usuario:
+        if user.disponible == False:
+            print(user.disponible)
+            usuario.update(disponible = True)
+        elif user.disponible == True:
+            print(user.disponible)
+            usuario.update(disponible = False)
+    return HttpResponse(status=status.HTTP_201_CREATED)

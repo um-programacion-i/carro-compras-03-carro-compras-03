@@ -9,6 +9,7 @@ class Usuario(models.Model):
     email = models.EmailField(max_length=60)
     clave = models.CharField(max_length=30)
     tipo = models.BooleanField()
+    disponible = models.BooleanField(default=True)
 
     def __str__(self) -> str:
         return self.nombre
