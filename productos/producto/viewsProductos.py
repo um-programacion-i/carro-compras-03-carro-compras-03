@@ -17,7 +17,7 @@ def productos_list(req):
         return JsonResponse(serializer.data, safe=False)      
 
 @api_view(('POST',))
-def post(req):
+def postProducto(req):
     print(req)
     data = JSONParser().parse(req)
     print(data)
@@ -62,16 +62,7 @@ def listarProductos(req, pk):
         return Response(status=200)
 
 @api_view(('PUT',))
-def cambiarEstado(req, pk):
-    '''producto = Producto.objects.get(pk=pk)
-    data = JSONParser.parse(req)
-    print(producto.disponible)
-    serializer = ProductoSerializer(producto.disponible, data=data)
-    if serializer.is_valid():
-
-        serializer.save()
-        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)'''
+def cambiarEstadoProd(req, pk):
     producto = Producto.objects.filter(pk=pk)
     print(pk)
     for prod in producto:

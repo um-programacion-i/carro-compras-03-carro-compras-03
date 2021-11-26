@@ -4,6 +4,7 @@ from django.db import models
 class Distribuidor(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=100)
+    disponible = models.BooleanField(default=True)
     
     def __str__(self) -> str:
         return f'Distribuidor: {self.nombre}, {self.descripcion}'

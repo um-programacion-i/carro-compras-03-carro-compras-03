@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, useLocation} from 'react-router-dom'
 import {Login} from './components/Login'
 import {Admin} from './components/admin/Admin'
 import {Productos} from './components/admin/Productos'
@@ -12,20 +12,21 @@ import {User} from './components/user/User'
 
 
 function App() {
-
+  const location = useLocation()
 
   return (
     <div className="App">
       <Router>
+        {location.pathname === '/Admin' ? null: <Admin />}
+
           <Switch>
             <Route exact path="/" component={Login} />
             <div>
-              <Admin />
-              <Route path="/User" component={User} />
               <Route path="/Distribuidores" component={Distribuidores} />
               <Route path="/Productos" component={Productos} />
               <Route path="/Usuarios" component={Usuarios} />
               <Route path="/Reportes" component={Reportes} />
+              <Route path="/User" component={User} />
             </div>
           </Switch>
       </Router>
