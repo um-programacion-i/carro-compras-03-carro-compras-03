@@ -9,20 +9,22 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 # Create your views here.
 
-@api_view(('GET','POST',))
+@api_view(('GET',))
 def distribuidor_list(req):
-    if req.method == 'GET':
-        distribuidor = Distribuidor.objects.all()
-        serializer = DistribuidorSerializer(distribuidor, many=True)
-        return JsonResponse(serializer.data, safe=False)
+    distribuidor = Distribuidor.objects.all()
+    serializer = DistribuidorSerializer(distribuidor, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
-    if req.method == 'POST':
-        data = JSONParser().parse(req)
-        serializer = DistribuidorSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=200)
-        return HttpResponse(status=204)
+@api_view(('POST',))
+def postDistribuidor(req):
+    data = JSONParser().parse(req)
+    serializer = DistribuidorSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        print(serializer.data)
+        return JsonResponse(serializer.data, status=200)
+    return Response(status=404)
+
 
 @api_view(('GET','PUT', 'DELETE'))
 @renderer_classes((JSONRenderer,))
@@ -45,3 +47,12 @@ def listarDistribuidor(req, pk):
         distribuidor.delete()
         return HttpResponse(status = 204)
 
+@api_view(('PUT',))
+def cambiarEstadoDist(req, pk):
+    distribuidor = Distribuidor.objects.filter(pk=pk)
+    for dist in distribuidor:
+        if dist.disponible == False:
+            distribuidor.update(disponible = True)
+        elif dist.disponible == True:
+            distribuidor.update(disponible = False)
+    return HttpResponse(status=status.HTTP_201_CREATED)

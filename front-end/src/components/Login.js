@@ -2,12 +2,13 @@ import React, {useState} from "react";
 import {useHistory} from "react-router-dom"
 import "../cssStyles/Login.css"
 import axios from 'axios'
-
-
+import Cookies from 'universal-cookie'
 
 
 export const Login = () => {
     const urlCDC = process.env.REACT_APP_CDC
+
+    const cookies = new Cookies()
 
     const history = useHistory()
 
@@ -18,26 +19,42 @@ export const Login = () => {
         }
       )
     
-    const clickHandler = () => {
-        history.push('/Admin');
+    const checkLogin = () => {
+        if(cookies.get('nombre')){
+            if(cookies.get('tipo') === 'true'){
+                history.push('/Admin');
+            }else{
+                history.push('/User');
+            }
+        }
     }
-    
+
     const log = async (e) => {
-        console.log('nombre',user.nombre)
-        console.log('clave',user.clave)
         await axios.post(urlCDC+'/carro/log/', {params: {nombre: user.nombre, clave: user.clave}})
         .then(response => {
             if(response.data.tipo === true){
                 console.log(response.data)
-                history.push('/Admin');
-                // clickHandler(true)
-                console.log('asfasfasfasfsaf')
+                const res = response.data
+                cookies.set('id', res.id, {path: "/"})
+                cookies.set('nombre', res.nombre, {path: "/"})
+                cookies.set('apellido', res.apellido, {path: "/"})
+                cookies.set('email', res.email, {path: "/"})
+                cookies.set('clave', res.clave, {path: "/"})
+                cookies.set('tipo', res.tipo, {path: "/"})
+                cookies.set('disponible', res.disponible, {path: "/"})
+                checkLogin()
             }
             else if (response.data.tipo === false){
                 console.log(response.data)
-                clickHandler(false)
-                // window.location = "http://localhost:3000/"+User+"/";
-                history.push('/User')
+                const res = response.data
+                cookies.set('id', res.id, {path: "/"})
+                cookies.set('nombre', res.nombre, {path: "/"})
+                cookies.set('apellido', res.apellido, {path: "/"})
+                cookies.set('email', res.email, {path: "/"})
+                cookies.set('clave', res.clave, {path: "/"})
+                cookies.set('tipo', res.tipo, {path: "/"})
+                cookies.set('disponible', res.disponible, {path: "/"})
+                checkLogin()
             }
             else if(response.data === 'No existe'){
                 console.log(response.data)
@@ -46,23 +63,7 @@ export const Login = () => {
         })
     }
 
-
-
-    /*const log2 = async(e) => {
-        const res = await fetch(`{$urlCDC}/carro/log/`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user.nombre,
-                user.clave
-            })
-        })
-        const data = await res.json()
-        console.log(data)
-    }*/
-
+    
     return(
             <React.Fragment>
                 <section className="vh-100 gradient-custom">

@@ -85,15 +85,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME' : 'carroCompras',
         'USER': 'postgres',
-        'PASSWORD': '2365',
-<<<<<<< Updated upstream
+        'PASSWORD': '',
         'HOST': 'localhost',
-=======
-        'HOST': 'db',
->>>>>>> Stashed changes
         'PORT': '5432'
     }
 }
+
 
 
 # Password validation

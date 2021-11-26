@@ -5,8 +5,8 @@ from .models import CarrosCompra, Usuario, ProductosComprados, Ventas
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['nombre', 'apellido', 'email',
-                  'clave', 'tipo']
+        fields = ['id','nombre', 'apellido', 'email',
+                  'clave', 'tipo', 'disponible']
             
 
 
