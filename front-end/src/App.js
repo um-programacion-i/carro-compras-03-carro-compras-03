@@ -12,16 +12,14 @@ import {User} from './components/user/User'
 
 
 function App() {
-  const location = useLocation()
 
   return (
     <div className="App">
       <Router>
-        {location.pathname === '/Admin' ? null: <Admin />}
-
           <Switch>
             <Route exact path="/" component={Login} />
             <div>
+              <Admin />
               <Route path="/Distribuidores" component={Distribuidores} />
               <Route path="/Productos" component={Productos} />
               <Route path="/Usuarios" component={Usuarios} />
