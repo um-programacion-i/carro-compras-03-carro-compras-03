@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter as Router, Switch, Route, useLocation} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, useLocation, BrowserRouter} from 'react-router-dom'
 import {Login} from './components/Login'
 import {Admin} from './components/admin/Admin'
 import {Productos} from './components/admin/Productos'
@@ -12,16 +12,14 @@ import {User} from './components/user/User'
 
 
 function App() {
-  const location = useLocation()
 
   return (
     <div className="App">
       <Router>
-        {location.pathname === '/Admin' ? null: <Admin />}
-
           <Switch>
             <Route exact path="/" component={Login} />
             <div>
+              <Admin />
               <Route path="/Distribuidores" component={Distribuidores} />
               <Route path="/Productos" component={Productos} />
               <Route path="/Usuarios" component={Usuarios} />
@@ -32,6 +30,51 @@ function App() {
       </Router>
     </div>
   );
+
+
+  // POSIBLE FIX A OCULTAR NAVBAR
+  /*  return(
+
+      <div className="App">
+        <BrowserRouter>
+          <div className="container">
+            <Switch>
+            <Route exact path="/" component={Login} />
+              <Route exact path="/Admin" component={Admin}>
+                <Admin />
+              </Route>
+              <Route exact path="/Distribuidores" component={Distribuidores}>
+                <Admin />
+                <Distribuidores />
+              </Route>
+              <Route exact path="/Productos" component={Productos}>
+                <Admin/>
+                <Productos/>
+              </Route>
+              <Route exact path="/Reportes" component={Reportes}>
+                <Admin/>
+                <Reportes/>
+              </Route>
+              <Route exact path="/Usuarios" component={Usuarios}>
+                <Admin />
+                <Usuarios />
+              </Route>
+              <Route exact path="/User" component={User}>
+                <User />
+              </Route>
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </div>
+
+
+
+    ); */
+
+
+
+
+
 }
 
 export default App;
