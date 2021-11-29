@@ -13,7 +13,7 @@ import {User} from './components/user/User'
 
 function App() {
 
-  return (
+  /*return (
     <div className="App">
       <Router>
           <Switch>
@@ -29,33 +29,32 @@ function App() {
           </Switch>
       </Router>
     </div>
-  );
+  );*/
 
 
   // POSIBLE FIX A OCULTAR NAVBAR
-  /*  return(
+    return(
 
       <div className="App">
         <BrowserRouter>
-          <div className="container">
             <Switch>
             <Route exact path="/" component={Login} />
               <Route exact path="/Admin" component={Admin}>
                 <Admin />
               </Route>
-              <Route exact path="/Distribuidores" component={Distribuidores}>
+              <Route exact path="/Admin/Distribuidores" component={Distribuidores}>
                 <Admin />
                 <Distribuidores />
               </Route>
-              <Route exact path="/Productos" component={Productos}>
+              <Route exact path="/Admin/Productos" component={Productos}>
                 <Admin/>
                 <Productos/>
               </Route>
-              <Route exact path="/Reportes" component={Reportes}>
+              <Route exact path="/Admin/Reportes" component={Reportes}>
                 <Admin/>
                 <Reportes/>
               </Route>
-              <Route exact path="/Usuarios" component={Usuarios}>
+              <Route exact path="/Admin/Usuarios" component={Usuarios}>
                 <Admin />
                 <Usuarios />
               </Route>
@@ -63,13 +62,12 @@ function App() {
                 <User />
               </Route>
             </Switch>
-          </div>
         </BrowserRouter>
       </div>
 
 
 
-    ); */
+    );
 
 
 

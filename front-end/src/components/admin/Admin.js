@@ -51,22 +51,22 @@ export const Admin = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                    <Link className="nav-link active" aria-current="page" to="/Productos">
+                    <Link className="nav-link active" aria-current="page" to="/Admin/Productos">
                         Productos
                     </Link>
                     </li>
                     <li className="nav-item">
-                    <Link className="nav-link active" aria-current="page" to="/Distribuidores">
+                    <Link className="nav-link active" aria-current="page" to="/Admin/Distribuidores">
                         Distribuidores
                     </Link>
                     </li>
                     <li className="nav-item">
-                    <Link className="nav-link active" aria-current="page" to="/Usuarios">
+                    <Link className="nav-link active" aria-current="page" to="/Admin/Usuarios">
                         Usuarios
                     </Link>
                     </li>
                     <li className="nav-item">
-                    <Link className="nav-link active" aria-current="page" to="/Reportes">
+                    <Link className="nav-link active" aria-current="page" to="/Admin/Reportes">
                         Reportes
                     </Link>
                     </li>
