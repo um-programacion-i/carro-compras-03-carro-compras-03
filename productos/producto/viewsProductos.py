@@ -74,3 +74,13 @@ def cambiarEstadoProd(req, pk):
             producto.update(disponible = False)
     return HttpResponse(status=status.HTTP_201_CREATED)
 
+@api_view(('GET',))
+def tomarProductoDistribuidor(req, idDistribuidor):
+    producto = Producto.objects.get(idDistribuidor=idDistribuidor)
+    serializer = ProductoSerializer(producto, many=True)
+    if serializer.is_valid():
+        return JsonResponse(serializer.data, safe=False)
+    return HttpResponse(status=504)
+    
+
+

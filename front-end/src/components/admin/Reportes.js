@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React , {useEffect} from 'react'
 import {useHistory} from "react-router-dom"
 import Cookies from 'universal-cookie'
@@ -6,13 +5,9 @@ import Cookies from 'universal-cookie'
 
 export const Reportes = () => {
 
-    const urlCDC = process.env.REACT_APP_CDC
-
     const cookies = new Cookies()
 
     const history = useHistory()
-
-    const [listaVentas, setlistaVentas] = useState([])
 
     const checkLogin = () => {
 
@@ -33,12 +28,23 @@ export const Reportes = () => {
     useEffect(() => {
         checkLogin()
     })
-
-    const getVentas = () => {
-        axios.get(urlCDC+'')
-    }
+ 
 
     return (
-    <h1>Reportes</h1>
+        <React.Fragment>
+            <h1>Reportes</h1>
+                <div>
+                    <button onClick={() => {history.push('/VentasDetalles')}}>
+                        Ventas Detalles
+                    </button>
+                    <button onClick={() => {history.push('/UsuarioDetalles')}}>
+                        Clientes Detalles
+                    </button>
+                    <button onClick={() => {history.push('/DistribuidorDetalles')}}>
+                        Distribuidor Detalles
+                    </button>
+                </div>
+        </React.Fragment>
+
         )
 }

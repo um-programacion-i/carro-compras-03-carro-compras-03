@@ -56,3 +56,4 @@ def cambiarEstadoDist(req, pk):
         elif dist.disponible == True:
             distribuidor.update(disponible = False)
     return HttpResponse(status=status.HTTP_201_CREATED)
+

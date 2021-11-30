@@ -26,9 +26,25 @@ def getUnaCompra(req, pk):
 def getAllVentas(req):
     ventas = Ventas.objects.all()
     serializer = VentasSerializer(ventas, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(('GET',))
+@renderer_classes((JSONRenderer,))
+def getDetalleVenta(req, pk):
+    ventas = Ventas.objects.filter(idProductoComprado__id = int(pk)).values()
+    print(ventas)
+    serializer = VentasSerializer(ventas, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(('POST',))
+@renderer_classes((JSONRenderer,))
+def postVentas(req):
+    data = JSONParser().parse(req)
+    serializer = VentasSerializer(data=data)
     if serializer.is_valid():
-        return JsonResponse(serializer.data, safe=False)
-    return HttpResponse(status=504)
+        serializer.save()
+        return JsonResponse(serializer.data, status=200)
+    return HttpResponse(status=204)
 
 @api_view(('GET',))
 @renderer_classes((JSONRenderer,))
@@ -49,5 +65,11 @@ def getTodasCompras(req):
         return Response(status=404)
 
 
-
-
+@api_view(('POST',))
+def postProductoComprado(req):
+    data = JSONParser().parse(req)
+    serializer = ProductosCompradosSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, status=200)
+    return HttpResponse(status=204)

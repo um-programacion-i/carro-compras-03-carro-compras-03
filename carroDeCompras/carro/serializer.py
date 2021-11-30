@@ -13,18 +13,18 @@ class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
 class ProductosCompradosSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProductosComprados
-        fields = ['nombre', 'descripcion', 'claveProductoOriginal',
+        fields = ['id','nombre', 'descripcion', 'claveProductoOriginal',
                   'precioVenta', 'cantidad', 'usuario']
 
 
 class VentasSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Ventas
-        fields = ['usuario', 'listado_de_productos', 'fechaDeVenta',
-                  'idProductoComprado','precioTotal']
+        fields = ['fechaDeVenta','idProductoComprado','precioTotal']
 
 
 class CarrosCompraSerializer(serializers.HyperlinkedModelSerializer):
+    usuario = serializers.IntegerField(source = 'usuario.id')
     class Meta:
         model = CarrosCompra
         fields = ['usuario', 'producto', 
