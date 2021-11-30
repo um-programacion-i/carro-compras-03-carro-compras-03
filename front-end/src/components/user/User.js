@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import Cookies from 'universal-cookie'
 import {useHistory} from "react-router-dom"
-import { useLocation } from 'react-router'
+
 
 export const User = () => {
 
