@@ -1,31 +1,23 @@
 from rest_framework import serializers
-from .models import CarrosCompra, Usuario, ProductosComprados, Ventas
+from .models import CarrosCompra, DetalleVentas, Usuario
 
 
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id','nombre', 'apellido', 'email',
+        fields = ['id', 'nombre', 'apellido', 'email',
                   'clave', 'tipo', 'disponible']
-            
 
+class DetalleVentasSerializer(serializers.HyperlinkedModelSerializer):
 
-class ProductosCompradosSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ProductosComprados
-        fields = ['nombre', 'descripcion', 'claveProductoOriginal',
-                  'precioVenta', 'cantidad', 'usuario']
-
-
-class VentasSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Ventas
-        fields = ['usuario', 'listado_de_productos', 'fechaDeVenta',
-                  'idProductoComprado','precioTotal']
+        model = DetalleVentas
+        fields = ['id', 'usuario_id', 'productosId', 'cantidad', 'precioTotal',
+                  'fechaDeVenta']
 
 
 class CarrosCompraSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CarrosCompra
-        fields = ['usuario', 'producto', 
+        fields = ['usuario', 'producto',
                   'cantidad_de_producto', 'precioTotal']
