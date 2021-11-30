@@ -7,6 +7,8 @@ import {Usuarios} from './components/admin/Usuarios'
 import {Reportes} from './components/admin/Reportes'
 import {Distribuidores} from './components/admin/Distribuidores'
 import {User} from './components/user/User'
+import Cookies from 'universal-cookie'
+
 
 
 
@@ -31,17 +33,23 @@ function App() {
     </div>
   );*/
 
+ /* const cookies = new Cookies()
+
+  const User = () => {
+    return cookies.get('nombre')
+  }
+
+  console.log(User())*/
 
   // POSIBLE FIX A OCULTAR NAVBAR
     return(
-
       <div className="App">
         <BrowserRouter>
             <Switch>
-            <Route exact path="/" component={Login} />
+              <Route exact path="/" component={Login} />
               <Route exact path="/Admin" component={Admin}>
                 <Admin />
-              </Route>
+                </Route>
               <Route exact path="/Admin/Distribuidores" component={Distribuidores}>
                 <Admin />
                 <Distribuidores />
@@ -64,15 +72,7 @@ function App() {
             </Switch>
         </BrowserRouter>
       </div>
-
-
-
     );
-
-
-
-
-
 }
 
 export default App;
