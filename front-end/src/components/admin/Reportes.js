@@ -1,7 +1,8 @@
 import axios from 'axios'
-import React , {useEffect} from 'react'
+import React , {useEffect, useState} from 'react'
 import {useHistory} from "react-router-dom"
 import Cookies from 'universal-cookie'
+
 
 
 export const Reportes = () => {

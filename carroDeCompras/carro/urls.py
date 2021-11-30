@@ -1,5 +1,5 @@
 from django.urls import path
-from carro import viewProdComp, viewUsuario, viewCarrosCompra
+from carro import viewDetalleVenta, viewUsuario, viewCarrosCompra
 
 
 urlpatterns = [
@@ -7,8 +7,9 @@ urlpatterns = [
     path('singleuser/<int:pk>/', viewUsuario.listarusuarios),
     path('log/', viewUsuario.log_user),
     path('cambiarEstadoUsuario/<int:pk>/', viewUsuario.cambiarEstadoUsuario),
-    path('products/', viewProdComp.getTodasCompras),
-    path('singleproduct/<int:pk>/', viewProdComp.getUnaCompra),
+    path('ventas/', viewDetalleVenta.getAllVentas),
+    path('ventasByUsuario/<int:id>/', viewDetalleVenta.getVentaByUsuario),
+    path('ventasById/<int:pk>/', viewDetalleVenta.ventasById),
     path('carrito/', viewCarrosCompra.carritoList),
     path('singlecarrito/<int:pk>/', viewCarrosCompra.un_carrito),
 ]
