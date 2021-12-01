@@ -1,19 +1,14 @@
-import axios from 'axios'
-import React , {useEffect, useState} from 'react'
-import {useHistory} from "react-router-dom"
+import React , {useEffect} from 'react'
+import {Link, useHistory} from "react-router-dom"
 import Cookies from 'universal-cookie'
-
+import 'bootswatch/dist/lux/bootstrap.min.css'  
 
 
 export const Reportes = () => {
 
-    const urlCDC = process.env.REACT_APP_CDC
-
     const cookies = new Cookies()
 
     const history = useHistory()
-
-    const [listaVentas, setlistaVentas] = useState([])
 
     const checkLogin = () => {
 
@@ -35,11 +30,30 @@ export const Reportes = () => {
         checkLogin()
     })
 
-    const getVentas = () => {
-        axios.get(urlCDC+'')
-    }
 
     return (
+    <React.Fragment>
     <h1>Reportes</h1>
+    <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '50vh'}}>
+    <Link to='/Admin/Reportes/VentasDetalles'>
+    <button className="btn btn-primary me-md-10"
+    type="button">
+        Ventas
+    </button>
+    </Link>
+    <Link to='/Admin/Reportes/ClientesDetalles'>
+    <button className="btn btn-primary"
+    type="button">
+        Clientes
+    </button>
+    </Link>
+    <Link to='/Admin/Reportes/DistribuidorDetalles'>
+    <button className="btn btn-primary"
+    type="button">
+        Distribuidor
+    </button>
+    </Link>
+    </div>
+    </React.Fragment>
         )
 }

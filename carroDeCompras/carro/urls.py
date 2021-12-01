@@ -10,6 +10,7 @@ urlpatterns = [
     path('ventas/', viewDetalleVenta.getAllVentas),
     path('ventasByUsuario/<int:id>/', viewDetalleVenta.getVentaByUsuario),
     path('ventasById/<int:pk>/', viewDetalleVenta.ventasById),
+    path('ventasRangoFecha/<str:fechaInicial>/<str:fechaFinal>/', viewDetalleVenta.ventasRangoFecha),
     path('carrito/', viewCarrosCompra.carritoList),
     path('singlecarrito/<int:pk>/', viewCarrosCompra.un_carrito),
 ]

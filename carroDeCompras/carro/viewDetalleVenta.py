@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from datetime import datetime
 
 
 @api_view(('GET', 'POST'))
@@ -54,3 +55,46 @@ def ventasById(req, pk):
     elif req.method == 'DELETE':
         venta[0].delete()
         return HttpResponse(status=204)
+
+
+@api_view(('GET',))
+# Lista todos los items agregados al carrito
+def ventasRangoFecha(req, fechaInicial, fechaFinal):
+    detalle = DetalleVentas.objects.filter(fechaDeVenta__range=[str(fechaInicial), str(fechaFinal)])
+    serializer = DetalleVentasSerializer(detalle, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(('GET',))
+# Lista todos los items agregados al carrito
+def ventasAño(req):
+    fecha = datetime.now()
+    fechaInicial = str(fecha.year)+'-'+'01-01'
+    fechaFinal = str(fecha.year)+'-'+'12-31'
+    detalle = DetalleVentas.objects.filter(fechaDeVenta__range=[str(fechaInicial), str(fechaFinal)])
+    serializer = DetalleVentasSerializer(detalle, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(('GET',))
+# Lista todos los items agregados al carrito
+def ventasMesCorriente(req, fechaFinal):
+    fecha = datetime.now()
+    fechaInicial = str(fecha.year)+'-'+str(fecha.month)+'-01'
+    detalle = DetalleVentas.objects.filter(fechaDeVenta__range=[str(fechaInicial), str(fechaFinal)])
+    serializer = DetalleVentasSerializer(detalle, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(('GET',))
+# Lista todos los items agregados al carrito
+def ventasUltimosTreintaDias(req):
+    fechaVieja = datetime.datetime.today()-datetime.timedelta(days=30)
+    fechaInicial = (str(fechaVieja.year) + '-' + str(fechaVieja.month) + '-' + str(fechaVieja.day))
+    fechaActual = datetime.now()
+    fechaFinal = str(fechaActual.year)+'-'+str(fechaActual.month)+'-'+str(fechaActual.day) 
+    detalle = DetalleVentas.objects.filter(fechaDeVenta__range=[str(fechaInicial), str(fechaFinal)])
+    serializer = DetalleVentasSerializer(detalle, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+
