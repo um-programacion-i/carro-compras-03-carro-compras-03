@@ -9,6 +9,7 @@ urlpatterns = [
     path('postDistribuidor/', postDistribuidor),
     path('postProducto/', postProducto),
     path('tomar_uno_prod/<int:pk>/', listarProductos),
-    path('cambiarestadoProd/<int:pk>/' , cambiarEstadoProd),
-    path('cambiarestadoDist/<int:pk>/' , cambiarEstadoDist)
+    path('cambiarestadoProd/<int:pk>/', cambiarEstadoProd),
+    path('cambiarestadoDist/<int:pk>/', cambiarEstadoDist),
+    path('distribuidorById/<int:id>/', distribuidorById),
 ]

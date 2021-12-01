@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @api_view(('GET', 'POST'))
@@ -78,9 +78,10 @@ def ventasAño(req):
 
 @api_view(('GET',))
 # Lista todos los items agregados al carrito
-def ventasMesCorriente(req, fechaFinal):
+def ventasMesCorriente(req):
     fecha = datetime.now()
     fechaInicial = str(fecha.year)+'-'+str(fecha.month)+'-01'
+    fechaFinal = str(fecha.year)+'-'+str(fecha.month)+'-'+str(fecha.day)
     detalle = DetalleVentas.objects.filter(fechaDeVenta__range=[str(fechaInicial), str(fechaFinal)])
     serializer = DetalleVentasSerializer(detalle, many=True)
     return JsonResponse(serializer.data, safe=False)
@@ -88,7 +89,7 @@ def ventasMesCorriente(req, fechaFinal):
 @api_view(('GET',))
 # Lista todos los items agregados al carrito
 def ventasUltimosTreintaDias(req):
-    fechaVieja = datetime.datetime.today()-datetime.timedelta(days=30)
+    fechaVieja = datetime.today()-timedelta(days=30)
     fechaInicial = (str(fechaVieja.year) + '-' + str(fechaVieja.month) + '-' + str(fechaVieja.day))
     fechaActual = datetime.now()
     fechaFinal = str(fechaActual.year)+'-'+str(fechaActual.month)+'-'+str(fechaActual.day) 
