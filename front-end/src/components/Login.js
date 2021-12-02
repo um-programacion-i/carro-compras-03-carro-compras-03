@@ -22,7 +22,7 @@ export const Login = () => {
     const checkLogin = () => {
         if(cookies.get('nombre')){
             if(cookies.get('tipo') === 'true'){
-                history.push('/Admin');
+                history.push('/Admin/Productos');
             }else{
                 history.push('/User');
             }
