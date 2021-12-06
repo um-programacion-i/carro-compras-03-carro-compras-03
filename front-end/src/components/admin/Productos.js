@@ -59,7 +59,6 @@ export const Productos = () => {
         .then(response => {
             setEditar(true)
             setId(response.data.id)
-            console.log(response.data)
             setProductos({
                 nombre: response.data.nombre,
                 descripcion: response.data.descripcion,
@@ -190,7 +189,7 @@ export const Productos = () => {
                                     <td>{prod.nombre}</td>
                                     <td>{prod.descripcion}</td>
                                     <td>{prod.precio}</td>
-                                    <td>{prod.idDistribuidor}</td>
+                                    <td>{prod.idDistribuidor_id}</td>
                                     <td>{prod.cantidadVendido}</td>
                                     <td>{prod.disponible.toString()}</td>
                                     <td>

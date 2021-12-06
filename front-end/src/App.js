@@ -82,6 +82,7 @@ function App() {
               <Route exact path="/User" component={User}>
                 <User />
               </Route>
+              
             </Switch>
         </BrowserRouter>
       </div>

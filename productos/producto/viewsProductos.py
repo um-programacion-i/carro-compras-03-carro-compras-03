@@ -41,8 +41,7 @@ def listarProductos(req, pk):
             return Response(status=404)
         #producto = Producto.objects.all()
         serializer = ProductoSerializer(producto, many=True)
-        print(dict(serializer.data[0]))
-        print(producto[0])
+        print(serializer.data[0])
         return Response(serializer.data[0], status=200)
     if req.method == 'PUT':
         print(pk)

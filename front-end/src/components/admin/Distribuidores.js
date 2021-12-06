@@ -159,18 +159,18 @@ export const Distribuidores = () => {
                                     <td>{dist.disponible.toString()}</td>
                                     <td>
                                         <button
-                                        className="btn btn-secondary btn-sm btn-block"
+                                        className="btn btn-secondary btn-sm btn-block col-md-4"
                                         onClick={e => editarDist(dist.id)}>
                                             Editar
                                         </button>
                                         <button 
-                                        className="btn btn-danger btn-sm btn-block"
+                                        className="btn btn-danger btn-sm btn-block col-md-4"
                                         onClick={e => borrarDist(dist.id)}
                                         >
                                             Eliminar
                                         </button>
                                         <button 
-                                        className="btn btn-secondary btn-sm btn-block"
+                                        className="btn btn-secondary btn-sm btn-block col-md-4"
                                         onClick={e => cambiarEstado(dist.id)}
                                         >
                                             Habilitar/Deshabilitar
