@@ -102,33 +102,43 @@ export const VentasDetalles = () => {
 
     return (
         <>
+        <br/>
         <h1>Ventas</h1>
-        <div className="row">
-            Fecha Inicial
-        <DatePicker
-        className="col-md-2"
-        type="text"
-        selected={startDate}
-        onChange={data=>handleChangeStart(data)}
-        value={startDate}
-        dateFormat="yyyy/MM/dd"/>
-        Fecha Final
-        <DatePicker
-        className="col-md-2"
-        type="text"
-        selected={endDate}
-        onChange={data=>handleChangeEnd(data)}
-        value={endDate}
-        dateFormat="yyyy/MM/dd"/>
-        <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getVentasRango}>Rango de fechas</button>
-        <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getventasUltimosTreintaDias}>Ultimos 30 dias</button>
-        <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getVentasMesCorriente}>Mes corriente</button>
-        <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getVentasAño}>Ventas del año</button>
-        </div>
+        <div className="card border-primary mb-20" style={{ alignSelf: "center" }}>
+            <div className="card-header">Filtro</div>
+                <div className="card-body col-md-40">
+                    <p>
+                    <div className="form-group row">
+                        Fecha Inicial
+                        <DatePicker
+                        className="col-md-5"
+                        type="text"
+                        selected={startDate}
+                        onChange={data=>handleChangeStart(data)}
+                        value={startDate}
+                        dateFormat="yyyy/MM/dd"/>
+                    </div>
+                    <div className="form-group row">
+                        Fecha Final
+                        <DatePicker
+                        className="col-md-5"
+                        type="text"
+                        selected={endDate}
+                        onChange={data=>handleChangeEnd(data)}
+                        value={endDate}
+                        dateFormat="yyyy/MM/dd"/>
+                    </div>
+                        <div className="btn-group-vertical col-md-5">
+                        <br/>
+
+                            <button type="button" class="btn btn-outline-primary" onClick={getVentasRango}>Rango de fechas</button>
+                            <button type="button" class="btn btn-primary" onClick={getventasUltimosTreintaDias}>Ultimos 30 dias</button>
+                            <button type="button" class="btn btn-primary" onClick={getVentasMesCorriente}>Mes corriente</button>
+                            <button type="button" class="btn btn-primary" onClick={getVentasAño}>Ventas del año</button>
+                        </div>
+                </p>
+            </div>
+            </div>
         <div className="col-md-15">
             <table className="table table-striped">
                 <thead>

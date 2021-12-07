@@ -140,7 +140,7 @@ export const Distribuidores = () => {
                     </button>
                 </form>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-8">
                     <table className="table table-striped">
                         <thead>
                             <tr>
@@ -158,6 +158,7 @@ export const Distribuidores = () => {
                                     <td>{dist.descripcion}</td>
                                     <td>{dist.disponible.toString()}</td>
                                     <td>
+                                        <div className="btn-group-vertical">
                                         <button
                                         className="btn btn-secondary btn-sm btn-block col-md-4"
                                         onClick={e => editarDist(dist.id)}>
@@ -170,11 +171,12 @@ export const Distribuidores = () => {
                                             Eliminar
                                         </button>
                                         <button 
-                                        className="btn btn-secondary btn-sm btn-block col-md-4"
+                                        className="btn btn-warning btn-sm btn-block col-md-4"
                                         onClick={e => cambiarEstado(dist.id)}
                                         >
                                             Habilitar/Deshabilitar
                                         </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

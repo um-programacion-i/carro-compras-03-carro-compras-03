@@ -33,6 +33,7 @@ export const Reportes = () => {
 
     return (
     <React.Fragment>
+    <br/>
     <h1>Reportes</h1>
     <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '50vh'}}>
     <Link to='/Admin/Reportes/VentasDetalles'>

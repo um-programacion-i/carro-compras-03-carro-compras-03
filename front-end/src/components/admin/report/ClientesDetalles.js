@@ -14,11 +14,12 @@ export const ClientesDetalles = () => {
     const [ventasDetalles, setVentasDetalles] = useState([])
     const [productosA, setProductos] = useState([])
     const [productosId, setProductosId] = useState([])
-    const [state, setState] = useState(false)
+    const [stateProductos, setStateProductos] = useState(true)
+    const [stateUsuarios, setStateUsuarios] = useState(false)
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-
     const [id, setId] = useState("");
+    const [fechaA, setFecha] = useState("");
 
 
     const handleChangeStart = (date) => {
@@ -31,30 +32,19 @@ export const ClientesDetalles = () => {
         console.log(endDate.getFullYear(), 'dia fin')
     }
 
-    const getUsuarios = () =>{
-        axios.get(urlCDC+'/carro/users/')
+    
+    const getVentas = () => {
+        axios.get(urlCDC+'/carro/ventas/')
         .then(res => {
-            setUsuarios(res.data.sort((a, b) => a.id - b.id))
+            setVentasDetalles(res.data.sort((a, b) => a.id - b.id))
         })
+        
     }
 
     useEffect(()=>{
-        getUsuarios()
+        getVentas()
     },[])
 
-    const getVentasById = async (id) => {
-        setId('')
-        await axios.get(urlCDC+'/carro/ventasByUsuario/' + id + '/')
-        .then(res => {
-            setVentasDetalles(res.data)
-            setProductosId(res.data.map(id=>id.productosId))
-            })
-        .catch('Error')
-        console.log(ventasDetalles)
-        getProductosById()
-        setId(id)
-        console.log(productosId)
-    }
 
     const formatList = (list) => {
         let text = ''
@@ -65,27 +55,26 @@ export const ClientesDetalles = () => {
         return text
     }
 
-    const getProductosById = () => {
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-        
-        const productos = []
-        productosId.map(id =>{
-            for(let ids of id){
-                console.log(ids)
-            axios.get(urlPROD+'/producto/tomar_uno_prod/' + ids + '/')
-            .then(res => {
-                productos.push(res.data)
-            })}})
-        setProductos(productos)
-        console.log(productosA, 'productos')
-        setState(true)
-        /*
-        setProductos(productos)
-        setId(listId)*/
-        }
+    const getProductosById = (id) => {
+        let ids = formatList(id)
+        console.log(ids)
+        axios.get(urlPROD+'/producto/getVariosProductos/' + ids + '/')
+        .then(res => {
+            setProductos(res.data)
+        })
+        setStateProductos(true)
+        setId(id)
+        console.log('productos')
+    }
     
-    const handleChange = () =>{
-        setState(false)
+    const getUsuariosById = (id, fecha) =>{
+        setFecha('')
+        axios.get(urlCDC+'/carro/singleuser/'+id+'/')
+        .then(res => {
+            setUsuarios(res.data)
+        })
+        setFecha(fecha)
+        setStateUsuarios(true)
     }
 
     const getVentasRango = async () => {
@@ -98,9 +87,6 @@ export const ClientesDetalles = () => {
             .then(res => {
                 setVentasDetalles(res.data)
         })}
-        if(!ventasDetalles){
-            getUsuarios()
-        }
     }
 
     const getVentasAño = async () => {
@@ -108,9 +94,6 @@ export const ClientesDetalles = () => {
         .then(res => {
             setVentasDetalles(res.data)
         })
-        if(!ventasDetalles){
-            getUsuarios()
-        }
     }
 
     const getVentasMesCorriente = async () => {
@@ -118,9 +101,6 @@ export const ClientesDetalles = () => {
         .then(res => {
             setVentasDetalles(res.data)
         })
-        if(!ventasDetalles){
-            getUsuarios()
-        }
     }
 
     const getventasUltimosTreintaDias = async () => {
@@ -128,103 +108,121 @@ export const ClientesDetalles = () => {
         .then(res => {
             setVentasDetalles(res.data)
         })
-        if(!ventasDetalles){
-            getUsuarios()
+    }
+    
+    const collapse = (prdId) => {
+        if(id === prdId){
+            setStateProductos(false)
         }
     }
 
+    const collapseU = (fecha, id) => {
+        if(fechaA === fecha && id){
+            setStateUsuarios(false)
+        }
+    }
 
     return (
         <>
-        <h1>Ventas</h1>
-        <div className="row">
-            Fecha Inicial
-        <DatePicker
-        className="col-md-2"
-        type="text"
-        selected={startDate}
-        onChange={data=>handleChangeStart(data)}
-        value={startDate}
-        dateFormat="yyyy/MM/dd"/>
-        Fecha Final
-        <DatePicker
-        className="col-md-2"
-        type="text"
-        selected={endDate}
-        onChange={data=>handleChangeEnd(data)}
-        value={endDate}
-        dateFormat="yyyy/MM/dd"/>
         <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getVentasRango}>Rango de fechas</button>
-        <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getventasUltimosTreintaDias}>Ultimos 30 dias</button>
-        <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getVentasMesCorriente}>Mes corriente</button>
-        <br/>
-        <button type="button" class="btn btn-outline-info col-md-2" onClick={getVentasAño}>Ventas del año</button>
-        </div>
-        <div className="col-md-15">
+        <h1>Clientes</h1>
+        <div className="card border-primary mb-20" style={{ alignSelf: "center" }}>
+            <div className="card-header">Filtro</div>
+                <div className="card-body col-md-40">
+                    <p>
+                    <div className="form-group row">
+                        Fecha Inicial
+                        <DatePicker
+                        className="col-md-5"
+                        type="text"
+                        selected={startDate}
+                        onChange={data=>handleChangeStart(data)}
+                        value={startDate}
+                        dateFormat="yyyy/MM/dd"/>
+                    </div>
+                    <div className="form-group row">
+                        Fecha Final
+                        <DatePicker
+                        className="col-md-5"
+                        type="text"
+                        selected={endDate}
+                        onChange={data=>handleChangeEnd(data)}
+                        value={endDate}
+                        dateFormat="yyyy/MM/dd"/>
+                    </div>
+                        <div className="btn-group-vertical col-md-5">
+                        <br/>
+
+                            <button type="button" class="btn btn-outline-primary" onClick={getVentasRango}>Rango de fechas</button>
+                            <button type="button" class="btn btn-primary" onClick={getventasUltimosTreintaDias}>Ultimos 30 dias</button>
+                            <button type="button" class="btn btn-primary" onClick={getVentasMesCorriente}>Mes corriente</button>
+                            <button type="button" class="btn btn-primary" onClick={getVentasAño}>Ventas del año</button>
+                        </div>
+                </p>
+            </div>
+            </div>
+        <div className="col-md-20">
             <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Email</th>
-                        <th>Clave</th>
-                        <th>Tipo</th>
-                        <th>Disponible</th>
-                        <th>Detalles Ventas</th>
+                        <th>Cantidad por producto</th>
+                        <th>Precio Total</th>
+                        <th>Fecha</th>
+                        <th>Productos comprados</th>
+                        <th>Usuario</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {usuarios.map(usuario => (
-                        <tr key={usuario.id}>
-                            <td>{usuario.id}</td>
-                            <td>{usuario.nombre}</td>
-                            <td>{usuario.apellido}</td>
-                            <td>{usuario.email}</td>
-                            <td>{usuario.clave}</td>
-                            <td>{usuario.tipo.toString()}</td>
-                            <td>{usuario.disponible.toString()}</td>
+                    {ventasDetalles.map((venta) => (
+                        <tr key={venta.id}>
+                            <td>{venta.id}</td>
+                            <td>{formatList(venta.cantidad)}</td>
+                            <td>{venta.precioTotal}</td>
+                            <td>{venta.fechaDeVenta}</td>
+                            <td>
+                            <div className="btn-group-vertical">
+                                    <button className="btn btn-secondary col-md-3"
+                                    type='reset'
+                                    onClick={(e)=>getProductosById(venta.productosId, e)}
+                                    value={productosA}>Expandir</button>
+                                        {id === venta.productosId &&
+                                        <Collapse isOpened={stateProductos}>
+                                            <ol>
+                                                {productosA.map((producto, index)=>(
+                                                    <li key={producto.id}>
+                                                        Nombre: {producto.nombre}
+                                                        <br/>
+                                                        Precio: {producto.precio}
+                                                    </li>
+                                                ))}
+                                            </ol>
+                                        </Collapse>
+                                       }
+                                    <button className="btn btn-danger col-md-3"
+                                    onClick={e => collapse(venta.productosId)}>Colapsar</button>
+                                </div>
+                            </td>
                             <td>
                                 <div className="btn-group-vertical">
-                                    <button className="btn btn-secondary col-md-4"
-                                    onClick={e=>getVentasById(usuario.id)}>Expandir</button>
-                                        { id === usuario.id &&
-                                        <Collapse isOpened={state}>
-                                    <ol>
-                                        <p>  
-                                        {ventasDetalles.map(ventas => (
-                                            <li key={ventas.id}>
-                                                Cantidad comprada: {formatList(ventas.cantidad)}
-                                                <br />
-                                                Fecha de compra: {ventas.fechaDeVenta}
-                                                <br />
-                                                Precio total: {ventas.precioTotal}
-                                                <br />
-                                            </li>
-                                            
-                                        ))}
-                                        </p>
-                                    </ol>
-                                    <ul>
-                                        Productos: 
-                                        {productosA.map(prd=>(
-                                            <li key={prd.id}>
-                                                    Nombre: {prd.nombre}
-                                                    <br />
-                                                    Descripcion: {prd.descripcion}
-                                                    <br />
-                                                    Precio: {prd.precio}
-                                                    <br />
-                                            </li>
-                                        ))}
-                                    </ul>
-                                         </Collapse>
-                                        }
-                                    <button className="btn btn-danger col-md-4"
-                                    onClick={handleChange}>Colapsar</button>
+                                    <button className="btn btn-secondary col-md-2"
+                                    onClick={e=>getUsuariosById(venta.usuario_id, venta.fechaDeVenta)} onPress>Expandir</button>
+                                    {fechaA === venta.fechaDeVenta && venta.usuario_id &&
+                                            <Collapse isOpened={stateUsuarios}>
+                                                <ul>
+                                                    <p>
+                                                    Usuarios: 
+                                                    {usuarios.map(usuario=>(
+                                                        <li key={usuario.id}>
+                                                            {usuario.nombre}
+                                                        </li>
+                                                    ))}
+                                                    </p>
+                                                </ul>
+                                            </Collapse>
+                                    }
+                                    <button className="btn btn-danger col-md-2"
+                                    onClick={e => collapseU(venta.fechaDeVenta, venta.id)}>Colapsar</button>
                                 </div>
                             </td>
                         </tr>

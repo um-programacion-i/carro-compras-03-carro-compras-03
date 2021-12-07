@@ -193,6 +193,7 @@ export const Productos = () => {
                                     <td>{prod.cantidadVendido}</td>
                                     <td>{prod.disponible.toString()}</td>
                                     <td>
+                                        <div className="btn-group-vertical">
                                         <button
                                         className="btn btn-secondary btn-sm btn-block"
                                         onClick={e => editarProd(prod.id)}>
@@ -205,11 +206,12 @@ export const Productos = () => {
                                             Eliminar
                                         </button>
                                         <button 
-                                        className="btn btn-secondary btn-sm btn-block"
+                                        className="btn btn-warning btn-sm btn-block"
                                         onClick={e => cambiarEstado(prod.id)}
                                         >
                                             Habilitar/Deshabilitar
                                         </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

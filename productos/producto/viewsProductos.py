@@ -83,3 +83,16 @@ def distribuidorById(req, id):
     producto = Producto.objects.filter(idDistribuidor__id=id).values()
     serializer = ProductoSerializer(producto, many=True)
     return JsonResponse(serializer.data, status=200, safe=False)
+
+
+@api_view(('GET',))
+def getVariosProductos(red, listaIds):
+    listaid = listaIds.split(sep=',')
+    listaProductos = []
+    print(listaIds)
+    for pk in listaid:
+        listaProductos.append(Producto.objects.get(pk=int(pk)))
+    serializer = ProductoSerializer(listaProductos, many=True)
+    print(serializer.data)
+    return Response(serializer.data, status=200)
+    

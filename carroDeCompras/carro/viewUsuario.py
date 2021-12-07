@@ -34,7 +34,8 @@ def listarusuarios(req, pk):
     if req.method == 'GET':
         #usuario = Usuario.objects.all()
         serializer = UsuarioSerializer(usuario, many=True)
-        return JsonResponse(serializer.data[0], status=200, safe=False)
+        print(serializer.data)
+        return JsonResponse(serializer.data, status=200, safe=False)
     if req.method == 'PUT':
         data = JSONParser().parse(req)
         serializer = UsuarioSerializer(usuario, data=data)

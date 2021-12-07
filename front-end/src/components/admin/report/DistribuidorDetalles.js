@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import {Collapse} from 'react-collapse';
 
 
@@ -60,23 +58,9 @@ export const DistribuidorDetalles = () => {
 
     return (
         <>
-        <h1>Ventas</h1>
-        <div className="row">
-        <DatePicker
-        className="col-md-2"
-        type="text"
-        selected={startDate}
-        onChange={data=>handleChangeStart(data)}
-        value={startDate}
-        dateFormat="yyyy/MM/dd"/>
-        <DatePicker
-        className="col-md-2"
-        type="text"
-        selected={endDate}
-        onChange={data=>handleChangeEnd(data)}
-        value={endDate}
-        dateFormat="yyyy/MM/dd"/>
-        </div>
+        <br/>
+        <h1>Distribuidor Detalles</h1>
+        
         <div className="col-md-15">
             <table className="table table-striped">
                 <thead>

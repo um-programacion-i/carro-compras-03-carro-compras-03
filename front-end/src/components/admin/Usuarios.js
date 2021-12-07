@@ -51,7 +51,7 @@ export const Usuarios = () => {
     const borrarUser = async(id) => {
         const borrar = window.confirm('Borrar?')
         if (borrar){
-        await axios.delete(urlCDC+'/producto/singleuser/'+id+'/')
+        await axios.delete(urlCDC+'/carro/singleuser/'+id+'/')
         }
         await getUsuarios()
     }
@@ -86,7 +86,6 @@ export const Usuarios = () => {
 
     const botonCrear = async(e) => {
         e.preventDefault()
-
         if (!editar){
             await axios.post(urlCDC+'/carro/users/', 
                    {nombre : usuarios.nombre,
@@ -211,6 +210,7 @@ export const Usuarios = () => {
                                     <td>{user.tipo.toString()}</td>
                                     <td>{user.disponible.toString()}</td>
                                     <td>
+                                        <div className="btn-group-vertical">
                                         <button
                                         className="btn btn-secondary btn-sm btn-block"
                                         onClick={e => editarUser(user.id)}>
@@ -223,11 +223,12 @@ export const Usuarios = () => {
                                             Eliminar
                                         </button>
                                         <button 
-                                        className="btn btn-secondary btn-sm btn-block"
+                                        className="btn btn-warning btn-sm btn-block"
                                         onClick={e => cambiarEstado(user.id)}
                                         >
                                             Habilitar/Deshabilitar
                                         </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
