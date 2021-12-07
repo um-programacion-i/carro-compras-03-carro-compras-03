@@ -1,0 +1,5 @@
+Lista de comandos utiles:
+
+docker-compose run --service-ports nombreservicio -> Corre un servicio especifico del yml
+
+docker-compose up -> Levanta todos los servicios del yml
