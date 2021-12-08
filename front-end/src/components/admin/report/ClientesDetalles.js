@@ -13,13 +13,12 @@ export const ClientesDetalles = () => {
     const [usuarios, setUsuarios] = useState([])
     const [ventasDetalles, setVentasDetalles] = useState([])
     const [productosA, setProductos] = useState([])
-    const [productosId, setProductosId] = useState([])
+    const [ventasId, setVentasId] = useState([])
     const [stateProductos, setStateProductos] = useState(true)
     const [stateUsuarios, setStateUsuarios] = useState(false)
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [id, setId] = useState("");
-    const [fechaA, setFecha] = useState("");
 
 
     const handleChangeStart = (date) => {
@@ -67,13 +66,13 @@ export const ClientesDetalles = () => {
         console.log('productos')
     }
     
-    const getUsuariosById = (id, fecha) =>{
-        setFecha('')
+    const getUsuariosById = (id, ventaId) =>{
+        setVentasId('')
         axios.get(urlCDC+'/carro/singleuser/'+id+'/')
         .then(res => {
             setUsuarios(res.data)
         })
-        setFecha(fecha)
+        setVentasId(ventaId)
         setStateUsuarios(true)
     }
 
@@ -116,8 +115,8 @@ export const ClientesDetalles = () => {
         }
     }
 
-    const collapseU = (fecha, id) => {
-        if(fechaA === fecha && id){
+    const collapseU = (id) => {
+        if(ventasId === id){
             setStateUsuarios(false)
         }
     }
@@ -206,23 +205,22 @@ export const ClientesDetalles = () => {
                             <td>
                                 <div className="btn-group-vertical">
                                     <button className="btn btn-secondary col-md-2"
-                                    onClick={e=>getUsuariosById(venta.usuario_id, venta.fechaDeVenta)} onPress>Expandir</button>
-                                    {fechaA === venta.fechaDeVenta && venta.usuario_id &&
+                                    onClick={e=>getUsuariosById(venta.usuario_id, venta.id)} onPress>Expandir</button>
+                                    { ventasId === venta.id &&
                                             <Collapse isOpened={stateUsuarios}>
-                                                <ul>
                                                     <p>
-                                                    Usuarios: 
                                                     {usuarios.map(usuario=>(
-                                                        <li key={usuario.id}>
-                                                            {usuario.nombre}
-                                                        </li>
+                                                        <p key={usuario.id}>
+                                                            Nombre: {usuario.nombre}
+                                                            <br />
+                                                            Email: {usuario.email}
+                                                        </p>
                                                     ))}
                                                     </p>
-                                                </ul>
                                             </Collapse>
                                     }
                                     <button className="btn btn-danger col-md-2"
-                                    onClick={e => collapseU(venta.fechaDeVenta, venta.id)}>Colapsar</button>
+                                    onClick={e => collapseU(venta.id)}>Colapsar</button>
                                 </div>
                             </td>
                         </tr>

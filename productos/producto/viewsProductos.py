@@ -96,3 +96,9 @@ def getVariosProductos(red, listaIds):
     print(serializer.data)
     return Response(serializer.data, status=200)
     
+
+@api_view(('GET',))
+def getProductosDisponibles(req):
+    producto = Producto.objects.filter(disponible=True)
+    serializer = ProductoSerializer(producto, many=True)
+    return JsonResponse(serializer.data, status=200, safe=False)

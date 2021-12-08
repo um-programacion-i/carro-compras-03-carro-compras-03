@@ -34,9 +34,9 @@ export const Admin = () => {
         
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-                <Link className="navbar-brand" to='/Admin'>
+                <h1 className="navbar-brand">
                 Admin Site
-                </Link>
+                </h1>
                 <button
                 className="navbar-toggler"
                 type="button"

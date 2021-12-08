@@ -12,5 +12,6 @@ urlpatterns = [
     path('cambiarestadoProd/<int:pk>/', cambiarEstadoProd),
     path('cambiarestadoDist/<int:pk>/', cambiarEstadoDist),
     path('distribuidorById/<int:id>/', distribuidorById),
-    path('getVariosProductos/<str:listaIds>/', getVariosProductos)
+    path('getVariosProductos/<str:listaIds>/', getVariosProductos),
+    path('getDisponibles/', getProductosDisponibles),
 ]
