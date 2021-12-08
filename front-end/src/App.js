@@ -10,7 +10,7 @@ import {ClientesDetalles} from './components/admin/report/ClientesDetalles'
 import {VentasDetalles} from './components/admin/report/VentasDetalles'
 import {DistribuidorDetalles} from './components/admin/report/DistribuidorDetalles'
 import {User} from './components/user/User'
-
+import {Carrito} from './components/user/Carrito'
 
 
 
@@ -82,7 +82,10 @@ function App() {
               <Route exact path="/User" component={User}>
                 <User />
               </Route>
-              
+              <Route exact path="/Carrito" component={Carrito}>
+                <User />
+                <Carrito />
+              </Route>
             </Switch>
         </BrowserRouter>
       </div>

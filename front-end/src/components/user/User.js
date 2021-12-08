@@ -7,11 +7,20 @@ import axios from 'axios'
 export const User = () => {
 
     const urlPROD = process.env.REACT_APP_PROD
+    const urlCDC = process.env.REACT_APP_CDC
+
     const cookies = new Cookies()
     const history = useHistory()
     const [productos, setProductos] = useState([])
     const [inputValue, setInputValue] = useState([])
-    const [value, setValue] = useState({})
+    const value = {}
+    const [state, setstate] = useState([])
+    const [listaProd, setlistaProd] = useState({
+      nombre : "",
+      descripcion: "",
+      precio: "",
+      cantidadVendida: ""
+  })
 
     const [id, setId] = useState('')
 
@@ -54,16 +63,17 @@ export const User = () => {
         setInputValue('')
         }
       
-    const sumarValor = (id) => {
+    const sumarValor = (id, e) => {
+      let valor = e.target.value
       if (!(id in value)) {
-        let newId = id
-        let newValue = 1
-        value[newId] = newValue
+        value['id'+id] = valor
       } else {
-        let newValue = value[id]
-        value[id] = newValue + 1
+        value['id'+id] = valor
       }
-      document.getElementById("readOnlyInput").placeholder = value[id]
+      console.log(value)
+    }
+
+    const postProductoOnCarro = () => {
       console.log(value)
     }
 
@@ -76,6 +86,21 @@ export const User = () => {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <Link class="nav-link active" to="/User">Home
+                  <span class="visually-hidden">(current)</span>
+                </Link>
+              </li>
+              <li class="nav-item">
+                <Link class="nav-link active" to="/Carrito">COMPRAR
+                  <span class="visually-hidden">(current)</span>
+                </Link>
+              </li>
+              <li class="nav-item">
+                <button onClick={postProductoOnCarro}>Boludes</button>
+              </li>
+            </ul>
             <form className="d-flex">
               <input className="form-control me-sm-2" type="text" placeholder="Buscar productos" value={inputValue} onChange={handleInputChange}/>
               <button className="btn btn-secondary my-2 my-sm-0" type="submit" onClick={e => filterProductos(e)}>Search</button>
@@ -83,13 +108,14 @@ export const User = () => {
           </div>
         </div>
       </nav>
+      { window.location.href === 'http://localhost:3000/User' &&
       <div className="col-md-8">
         <table className="table table-striped">
             <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Precio</th>
-                    <th>Agregar al carrito</th>
+                    <th>Cantidad a agregar</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,30 +126,28 @@ export const User = () => {
                         </td>
                         <td>{prod.precio}</td>
                         <td>
-                          <div style={{ display: "flex", textAlign: "center"}}>
-                            <button type="button" className="btn btn-dark btn-sm" style={{ marginLeft: "auto" }}
-                            value={value}
-                            onClick={e => sumarValor(prod.id)}>
-                              +
-                            </button>
-
-                            <form className="form-group col-md-3" style={{ marginRight: "auto" }}>
-                              <fieldset>
-                                <input className="form-control"
-                                id="readOnlyInput" 
-                                type="text" 
-                                placeholder={0}
-                                readOnly />
-                              </fieldset>
-                            </form>
+                        <div className="form-group" style={{display: "flex"}}>
+                          <label htmlFor="Select" className="form-label mt-4">
+                          </label>
+                          <select className="form-select"
+                          id="Select"
+                          style = {{alignSelf: "top"}}
+                          onChange={e => sumarValor(prod.id, e)}
+                          >
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
                         </div>
-                        
                         </td>
                     </tr>
                 ))}
             </tbody>
         </table>
       </div>
+    }
 </React.Fragment>
         )
 }

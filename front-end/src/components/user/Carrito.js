@@ -2,9 +2,9 @@ import React from 'react'
 
 export const Carrito = () => {
     return (
-        <div>
-            
-        </div>
+        <h1>
+            hola
+        </h1>
     )
 }
 
