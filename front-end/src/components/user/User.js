@@ -11,10 +11,7 @@ export const User = () => {
     const history = useHistory()
     const [productos, setProductos] = useState([])
     const [inputValue, setInputValue] = useState([])
-    const [value, setValue] = useState({
-      clave: [],
-      valor: ""
-    })
+    const [value, setValue] = useState({})
 
     const [id, setId] = useState('')
 
@@ -57,8 +54,17 @@ export const User = () => {
         setInputValue('')
         }
       
-    const sumarValor = (index) => {
-      setValue
+    const sumarValor = (id) => {
+      if (!(id in value)) {
+        let newId = id
+        let newValue = 1
+        value[newId] = newValue
+      } else {
+        let newValue = value[id]
+        value[id] = newValue + 1
+      }
+      document.getElementById("readOnlyInput").placeholder = value[id]
+      console.log(value)
     }
 
     return (
@@ -100,12 +106,13 @@ export const User = () => {
                             onClick={e => sumarValor(prod.id)}>
                               +
                             </button>
-                            <form className="form-group col-md-2" style={{ marginRight: "auto" }}>
+
+                            <form className="form-group col-md-3" style={{ marginRight: "auto" }}>
                               <fieldset>
                                 <input className="form-control"
                                 id="readOnlyInput" 
                                 type="text" 
-                                placeholder={value}
+                                placeholder={0}
                                 readOnly />
                               </fieldset>
                             </form>

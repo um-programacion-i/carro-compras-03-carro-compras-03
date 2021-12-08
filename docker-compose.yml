@@ -11,6 +11,8 @@ services:
         ports:
             - "3000:3000"
         depends_on:
+            - carrodb
+            - productosdb
             - carrodecompras
             - productos
 
@@ -61,3 +63,11 @@ services:
           - ./databases/productos-data:/var/lib/postgresql/data/
         ports:
           - "5433:5432"
+
+    nginex:
+        image: nginx:latest
+        container_name: nginex
+        ports:
+          - "8080:8080"
+        volumes:
+          - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
