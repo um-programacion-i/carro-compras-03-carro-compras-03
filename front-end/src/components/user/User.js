@@ -13,7 +13,8 @@ export const User = () => {
     const history = useHistory()
     const [productos, setProductos] = useState([])
     const [inputValue, setInputValue] = useState([])
-    const value = {}
+    var values = []
+    let buffer = []
     const [state, setstate] = useState([])
     const [listaProd, setlistaProd] = useState({
       nombre : "",
@@ -22,7 +23,6 @@ export const User = () => {
       cantidadVendida: ""
   })
 
-    const [id, setId] = useState('')
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -62,19 +62,51 @@ export const User = () => {
         setProductos(nombre)
         setInputValue('')
         }
-      
-    const sumarValor = (id, e) => {
-      let valor = e.target.value
-      if (!(id in value)) {
-        value['id'+id] = valor
-      } else {
-        value['id'+id] = valor
+    
+    const sumarValor = (idItem, e) => {
+      let valorCant = e.target.value
+
+      // Si values esta vacio,crea e ingresa el primer json
+      if (values <= []) {
+        let data = {
+          'id' : idItem,
+          'value': valorCant
+        }
+        values.push(data)
       }
-      console.log(value)
+
+      //bucle for revisa si existe un json con el id == idItem
+      for (let json of values) {
+        if (json.id === idItem){
+          // Si la cantidad elegida es 0, borra el json de la lista para evitar datos basura
+          if (valorCant === "0") {
+            values.splice(values.indexOf(json), 1)
+            var flag = true
+            break
+          } else {
+            json.value = valorCant //si existe, actualiza la cantidad
+            var flag = true //flag sirve para indicar que si existe ese indice en values
+            break
+          }
+          
+        } else {
+          var flag = false //si no existe ese id en values, flag indica que no
+        }
+      }
+
+      //si flag a indicado que no existe ese id, se crea un json con los datos y se agrega a values
+      if (!flag) { 
+        let data = {
+          'id' : idItem,
+          'value': valorCant
+        }
+        values.push(data)
+      }
+      console.log(values)
     }
 
     const postProductoOnCarro = () => {
-      console.log(value)
+      console.log(values)
     }
 
     return (
@@ -134,6 +166,7 @@ export const User = () => {
                           style = {{alignSelf: "top"}}
                           onChange={e => sumarValor(prod.id, e)}
                           >
+                            <option>0</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
