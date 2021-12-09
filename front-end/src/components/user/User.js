@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Cookies from 'universal-cookie'
 import {Link, useHistory} from "react-router-dom"
+import {Carrito} from './Carrito'
 import axios from 'axios'
 
 
@@ -14,7 +15,7 @@ export const User = () => {
     const [productos, setProductos] = useState([])
     const [inputValue, setInputValue] = useState([])
     var values = []
-    let buffer = []
+    const [toCarrito, setToCarrito] = useState([])
     const [state, setstate] = useState([])
     const [listaProd, setlistaProd] = useState({
       nombre : "",
@@ -106,7 +107,7 @@ export const User = () => {
     }
 
     const postProductoOnCarro = () => {
-      console.log(values)
+      setToCarrito(values)
     }
 
     return (
@@ -125,12 +126,16 @@ export const User = () => {
                 </Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link active" to="/Carrito">COMPRAR
-                  <span class="visually-hidden">(current)</span>
+                <Link class="nav-link active" to={{
+                  pathname: "/Carrito",
+                  state: values
+                }}
+                onClick={e => postProductoOnCarro()} >COMPRAR
+                <span class="visually-hidden">(current)</span>
                 </Link>
               </li>
               <li class="nav-item">
-                <button onClick={postProductoOnCarro}>Boludes</button>
+                <button >Boludes</button>
               </li>
             </ul>
             <form className="d-flex">
