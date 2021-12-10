@@ -81,16 +81,14 @@ export const Productos = () => {
 
     const botonCrear = async(e) => {
         e.preventDefault()
-
         console.log(productos)
-
         if (!editar){
             await axios.post(urlPROD+'/producto/postProducto/', 
                    {nombre: productos.nombre, 
                    descripcion: productos.descripcion,
                    precio: productos.precio,
                    cantidadVendido: productos.cantidadVendida 
-                   },
+                   }
             ).then(response => {
             console.log(response.data)
             })

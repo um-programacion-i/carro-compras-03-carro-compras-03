@@ -32,9 +32,8 @@ class DetalleVentas(models.Model):
 # Productos temporales que cada usuario agrega al carrito  (FALTA HACER VISTA)
 class CarrosCompra(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
-    producto = models.CharField(max_length=100, null=True)
+    productos = models.CharField(max_length=100, null=True)
     cantidad_de_producto = models.IntegerField(null=True)
     precioTotal = models.FloatField()
-
     def __str__(self) -> str:
         return self.id

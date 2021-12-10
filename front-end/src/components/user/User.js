@@ -1,29 +1,31 @@
 import React, {useState, useEffect} from 'react'
 import Cookies from 'universal-cookie'
 import {Link, useHistory} from "react-router-dom"
-import {Carrito} from './Carrito'
 import axios from 'axios'
+import { useLocation } from 'react-router'
 
 
 export const User = () => {
 
     const urlPROD = process.env.REACT_APP_PROD
-    const urlCDC = process.env.REACT_APP_CDC
-
+    const urlCDC  = process.env.REACT_APP_CDC
+    const location = useLocation()
+    var values2 = location.state
     const cookies = new Cookies()
     const history = useHistory()
-    const [productos, setProductos] = useState([])
+    const [productosListar, setProductosListar] = useState([])
     const [inputValue, setInputValue] = useState([])
     var values = []
-    const [toCarrito, setToCarrito] = useState([])
-    const [state, setstate] = useState([])
-    const [listaProd, setlistaProd] = useState({
-      nombre : "",
-      descripcion: "",
-      precio: "",
-      cantidadVendida: ""
-  })
-
+    const [carrito, setCarrito] = useState({
+      productos: "",
+      cantidad_de_producto: "",
+      precioTotal: ""
+    })
+    // enviar este hook a carrito para hacer un post en la view de carrito y luego
+    // hacer un post en productos para indicar la cantidad vendida. Ya que inicialmente esta 
+    // es cero ya que recien se encuentra en la fase de compra
+    const [productoTemporal, setProductoTemporal] = useState([])
+    const [cantidad, setCantidad] = useState(0)
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -43,8 +45,9 @@ export const User = () => {
     const getProductos = async () => {
       await axios.get(urlPROD+'/producto/getDisponibles/')
         .then(res =>{
-          setProductos(res.data)
+          setProductosListar(res.data)
         })
+      console.log('este es el estado', values2)
     }
 
     useEffect(() => {
@@ -55,12 +58,12 @@ export const User = () => {
         e.preventDefault();
         const inputval = inputValue
         const inputval2 = inputValue.charAt(0).toUpperCase() + inputValue.slice(1)
-        let nombre = productos.filter((marca) =>{
+        let nombre = productosListar.filter((marca) =>{
             if(marca.nombre.includes(inputval) || marca.nombre.includes(inputval2)){
                 return marca
             }
         })
-        setProductos(nombre)
+        setProductosListar(nombre)
         setInputValue('')
         }
     
@@ -68,6 +71,13 @@ export const User = () => {
       let valorCant = e.target.value
 
       // Si values esta vacio,crea e ingresa el primer json
+      let comprobacion = ((values2 === undefined) === false)
+      console.log(comprobacion)
+      if((comprobacion)===true){
+        if(values2.length !== 0){
+           values = values2
+          }
+      }
       if (values <= []) {
         let data = {
           'id' : idItem,
@@ -103,11 +113,61 @@ export const User = () => {
         }
         values.push(data)
       }
-      console.log(values)
+      console.log('este es el values ',values)
     }
 
-    const postProductoOnCarro = () => {
-      setToCarrito(values)
+  
+
+    const formatList = (list) => {
+      let text = ''
+      for (let item of list) {
+          text += item + ', '
+      }
+      text = text.slice(0, -2)
+      return text
+  }
+    
+    const postProductoOnCarro = async () => {
+      let ids = ''
+      values.map(loc => {
+          ids += loc.id.toString()
+          console.log(ids)
+      })
+      ids = formatList(ids)
+      await axios.get(urlPROD+'/producto/getVariosProductos/'+ids+'/')
+      .then(res => {
+        setProductoTemporal(res.data)
+      })
+      console.log(productoTemporal, 'producto temporal')
+      productoTemporal.map(prd => {
+        values.map(val => {
+        setCarrito({
+          productos : prd.nombre,
+          precioTotal : val.value * prd.precio,
+  
+        })
+      })})
+
+      let precio_total = 0
+
+      console.log(carrito, 'qworjqwkrjkqwljrklqwjr')
+      
+    //   
+    //   console.log(precio, 'precio')
+    //   setCarrito({precioTotal: precio_total})
+    //   console.log('carrito', carrito, 'sklgk')
+    //   values.map(val => {
+    //     axios.post(urlCDC+'/carro/carrito/',
+    //     {
+    //       usuario_id: parseInt(cookies.get('id')),
+    //       productos: carrito.productos,
+    //       cantidad_de_producto: val.value,
+    //       precioTotal: carrito.precioTotal
+    //     })
+    //     .then(res => {
+    //       console.log(res.data, 'datos')
+    //     })
+    // })
     }
 
     return (
@@ -125,18 +185,19 @@ export const User = () => {
                   <span class="visually-hidden">(current)</span>
                 </Link>
               </li>
+              {window.location.href === 'http://localhost:3000/User' &&
               <li class="nav-item">
-                <Link class="nav-link active" to={{
+                <Link class="nav-link active"
+                to = {{
                   pathname: "/Carrito",
                   state: values
                 }}
-                onClick={e => postProductoOnCarro()} >COMPRAR
+                onClick={postProductoOnCarro}
+                >COMPRAR
                 <span class="visually-hidden">(current)</span>
                 </Link>
               </li>
-              <li class="nav-item">
-                <button >Boludes</button>
-              </li>
+              }
             </ul>
             <form className="d-flex">
               <input className="form-control me-sm-2" type="text" placeholder="Buscar productos" value={inputValue} onChange={handleInputChange}/>
@@ -156,7 +217,7 @@ export const User = () => {
                 </tr>
             </thead>
             <tbody>
-                {productos.map((prod, index) => (
+                {productosListar.map((prod, index) => (
                     <tr key={prod.id}>
                         <td><h3>{prod.nombre}</h3>
                         <small className="text-muted">{prod.descripcion}</small>
