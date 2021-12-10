@@ -28,16 +28,17 @@ def carritoList(req):
 @renderer_classes((JSONRenderer,))
 def un_carrito(req, pk):
     try:
-        carrito = [CarrosCompra.objects.get(pk=pk)]
+        carrito = CarrosCompra.objects.get(pk=pk)
     except CarrosCompra.DoesNotExist:
         return HttpResponse(status=404)
 
     if req.method == 'GET':
-        serializer = CarrosCompraSerializer(carrito, many=True)
+        serializer = CarrosCompraSerializer([carrito], many=True)
         return JsonResponse(serializer.data[0], status=200, safe=False)
 
     elif req.method == 'PUT':
         data = JSONParser().parse(req)
+        print(carrito)
         serializer = CarrosCompraSerializer(carrito, data=data)
         if serializer.is_valid():
             serializer.save()
@@ -47,3 +48,9 @@ def un_carrito(req, pk):
     elif req.method == 'DELETE':
         carrito.delete()
         return HttpResponse(status=204)
+
+@api_view(('GET',))
+def carritoByUser(req, id_user):
+    carrito = CarrosCompra.objects.filter(usuario = id_user).values()
+    serializer = CarrosCompraSerializer(carrito, many=True)
+    return JsonResponse(serializer.data, status=200, safe=False)

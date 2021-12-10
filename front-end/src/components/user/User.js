@@ -16,16 +16,17 @@ export const User = () => {
     const [productosListar, setProductosListar] = useState([])
     const [inputValue, setInputValue] = useState([])
     var values = []
-    const [carrito, setCarrito] = useState({
+    /*const [carrito, setCarrito] = useState({
       productos: "",
       cantidad_de_producto: "",
       precioTotal: ""
-    })
+    })*/
     // enviar este hook a carrito para hacer un post en la view de carrito y luego
     // hacer un post en productos para indicar la cantidad vendida. Ya que inicialmente esta 
     // es cero ya que recien se encuentra en la fase de compra
-    const [productoTemporal, setProductoTemporal] = useState([])
-    const [cantidad, setCantidad] = useState(0)
+
+    console.log('Se recupero datos de carrito')
+    console.log(values2)
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -75,7 +76,10 @@ export const User = () => {
       console.log(comprobacion)
       if((comprobacion)===true){
         if(values2.length !== 0){
-           values = values2
+           values = []
+           for (let json of values2){
+             values.push(json)
+           }
           }
       }
       if (values <= []) {
@@ -128,46 +132,30 @@ export const User = () => {
   }
     
     const postProductoOnCarro = async () => {
+      let productoTemporal = []
+      let cantidades = []
       let ids = ''
       values.map(loc => {
           ids += loc.id.toString()
+          cantidades.push(loc.value)
           console.log(ids)
       })
       ids = formatList(ids)
       await axios.get(urlPROD+'/producto/getVariosProductos/'+ids+'/')
       .then(res => {
-        setProductoTemporal(res.data)
+        productoTemporal = res.data
       })
       console.log(productoTemporal, 'producto temporal')
-      productoTemporal.map(prd => {
-        values.map(val => {
-        setCarrito({
-          productos : prd.nombre,
-          precioTotal : val.value * prd.precio,
-  
-        })
-      })})
-
-      let precio_total = 0
-
-      console.log(carrito, 'qworjqwkrjkqwljrklqwjr')
-      
-    //   
-    //   console.log(precio, 'precio')
-    //   setCarrito({precioTotal: precio_total})
-    //   console.log('carrito', carrito, 'sklgk')
-    //   values.map(val => {
-    //     axios.post(urlCDC+'/carro/carrito/',
-    //     {
-    //       usuario_id: parseInt(cookies.get('id')),
-    //       productos: carrito.productos,
-    //       cantidad_de_producto: val.value,
-    //       precioTotal: carrito.precioTotal
-    //     })
-    //     .then(res => {
-    //       console.log(res.data, 'datos')
-    //     })
-    // })
+      for (let producto of productoTemporal) {
+        let cantidad = cantidades.shift()
+        let data = {
+          usuario: parseInt(cookies.get('id')),
+          productos: producto.nombre,
+          cantidad_de_producto: cantidad,
+          precioTotal: parseFloat(producto.precio) * parseInt(cantidad)
+        }
+        axios.post(urlCDC+'/carro/carrito/', data)
+      }
     }
 
     return (

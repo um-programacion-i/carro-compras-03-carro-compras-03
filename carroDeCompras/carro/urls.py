@@ -16,4 +16,5 @@ urlpatterns = [
     path('ventasUltimosTreintaDias/', viewDetalleVenta.ventasUltimosTreintaDias),
     path('carrito/', viewCarrosCompra.carritoList),
     path('singlecarrito/<int:pk>/', viewCarrosCompra.un_carrito),
+    path('carritoByUser/<int:id_user>/', viewCarrosCompra.carritoByUser)
 ]

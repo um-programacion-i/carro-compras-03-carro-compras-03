@@ -19,5 +19,5 @@ class DetalleVentasSerializer(serializers.HyperlinkedModelSerializer):
 class CarrosCompraSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CarrosCompra
-        fields = ['usuario_id', 'productos',
+        fields = ['id', 'usuario', 'productos',
                   'cantidad_de_producto', 'precioTotal']
