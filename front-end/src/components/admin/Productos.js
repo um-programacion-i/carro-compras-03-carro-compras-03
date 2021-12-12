@@ -95,10 +95,11 @@ export const Productos = () => {
         }else{
             console.log('ACAAAAAAAAAAAAAAAAAAAA')
             await axios.put(urlPROD+'/producto/tomar_uno_prod/'+id+'/',
-            {nombre: productos.nombre, 
-            descripcion: productos.descripcion,
-            precio: productos.precio,
-            cantidadVendido: productos.cantidadVendida
+            {
+                nombre: productos.nombre, 
+                descripcion: productos.descripcion,
+                precio: productos.precio,
+                cantidadVendido: productos.cantidadVendida
             })
             setEditar(false)
             setId("")

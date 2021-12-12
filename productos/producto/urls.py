@@ -14,4 +14,6 @@ urlpatterns = [
     path('distribuidorById/<int:id>/', distribuidorById),
     path('getVariosProductos/<str:listaIds>/', getVariosProductos),
     path('getDisponibles/', getProductosDisponibles),
+    path('productoNombre/<str:nombre>/', getIdByName),
+    path('putCantidad/<int:pk>/<int:cantidad>/', putCantidad)
 ]

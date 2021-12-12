@@ -44,7 +44,7 @@ export const Login = () => {
                 cookies.set('disponible', res.disponible, {path: "/"})
                 checkLogin()
             }
-            else if (response.data.tipo === false){
+            else if (response.data.tipo === false && response.data.disponible === true){
                 console.log(response.data)
                 const res = response.data
                 cookies.set('id', res.id, {path: "/"})

@@ -9,24 +9,12 @@ export const User = () => {
 
     const urlPROD = process.env.REACT_APP_PROD
     const urlCDC  = process.env.REACT_APP_CDC
-    const location = useLocation()
-    var values2 = location.state
     const cookies = new Cookies()
     const history = useHistory()
     const [productosListar, setProductosListar] = useState([])
     const [inputValue, setInputValue] = useState([])
     var values = []
-    /*const [carrito, setCarrito] = useState({
-      productos: "",
-      cantidad_de_producto: "",
-      precioTotal: ""
-    })*/
-    // enviar este hook a carrito para hacer un post en la view de carrito y luego
-    // hacer un post en productos para indicar la cantidad vendida. Ya que inicialmente esta 
-    // es cero ya que recien se encuentra en la fase de compra
 
-    console.log('Se recupero datos de carrito')
-    console.log(values2)
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -48,7 +36,6 @@ export const User = () => {
         .then(res =>{
           setProductosListar(res.data)
         })
-      console.log('este es el estado', values2)
     }
 
     useEffect(() => {
@@ -72,16 +59,6 @@ export const User = () => {
       let valorCant = e.target.value
 
       // Si values esta vacio,crea e ingresa el primer json
-      let comprobacion = ((values2 === undefined) === false)
-      console.log(comprobacion)
-      if((comprobacion)===true){
-        if(values2.length !== 0){
-           values = []
-           for (let json of values2){
-             values.push(json)
-           }
-          }
-      }
       if (values <= []) {
         let data = {
           'id' : idItem,
@@ -117,35 +94,33 @@ export const User = () => {
         }
         values.push(data)
       }
-      console.log('este es el values ',values)
     }
-
-  
 
     const formatList = (list) => {
       let text = ''
       for (let item of list) {
-          text += item + ', '
+          if(item.slice(-1) !== 0){
+            text += item + ','
+          }
       }
-      text = text.slice(0, -2)
+      console.log(text)
+      text = text.slice(0, -1)
       return text
   }
     
     const postProductoOnCarro = async () => {
       let productoTemporal = []
       let cantidades = []
-      let ids = ''
-      values.map(loc => {
-          ids += loc.id.toString()
+      let ids = []
+      values.map((loc, index) => {
+          ids.push(loc.id.toString())
           cantidades.push(loc.value)
-          console.log(ids)
       })
       ids = formatList(ids)
       await axios.get(urlPROD+'/producto/getVariosProductos/'+ids+'/')
       .then(res => {
         productoTemporal = res.data
       })
-      console.log(productoTemporal, 'producto temporal')
       for (let producto of productoTemporal) {
         let cantidad = cantidades.shift()
         let data = {
@@ -154,7 +129,7 @@ export const User = () => {
           cantidad_de_producto: cantidad,
           precioTotal: parseFloat(producto.precio) * parseInt(cantidad)
         }
-        axios.post(urlCDC+'/carro/carrito/', data)
+        await axios.post(urlCDC+'/carro/carrito/', data)
       }
     }
 
@@ -169,7 +144,7 @@ export const User = () => {
           <div className="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <Link class="nav-link active" to="/User">Home
+                <Link class="nav-link active" to="/User" onClick={e => getProductos()}>Home
                   <span class="visually-hidden">(current)</span>
                 </Link>
               </li>
@@ -181,6 +156,7 @@ export const User = () => {
                   state: values
                 }}
                 onClick={postProductoOnCarro}
+                onAuxClick={e => window.location.reload(false)}
                 >COMPRAR
                 <span class="visually-hidden">(current)</span>
                 </Link>

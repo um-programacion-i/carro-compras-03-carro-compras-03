@@ -1,6 +1,6 @@
-from re import T
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from rest_framework import response, serializers
 from producto.serializer import ProductoSerializer
 from .models import Distribuidor, Producto
 from rest_framework.response import Response
@@ -67,13 +67,10 @@ def listarProductos(req, pk):
 @api_view(('PUT',))
 def cambiarEstadoProd(req, pk):
     producto = Producto.objects.filter(pk=pk)
-    print(pk)
     for prod in producto:
         if prod.disponible == False:
-            print(prod.disponible)
             producto.update(disponible=True)
         elif prod.disponible == True:
-            print(prod.disponible)
             producto.update(disponible=False)
     return HttpResponse(status=status.HTTP_201_CREATED)
 
@@ -89,11 +86,9 @@ def distribuidorById(req, id):
 def getVariosProductos(red, listaIds):
     listaid = listaIds.split(sep=',')
     listaProductos = []
-    print(listaIds)
     for pk in listaid:
         listaProductos.append(Producto.objects.get(pk=int(pk)))
     serializer = ProductoSerializer(listaProductos, many=True)
-    print(serializer.data)
     return Response(serializer.data, status=200)
     
 
@@ -102,3 +97,14 @@ def getProductosDisponibles(req):
     producto = Producto.objects.filter(disponible=True)
     serializer = ProductoSerializer(producto, many=True)
     return JsonResponse(serializer.data, status=200, safe=False)
+
+@api_view(('GET',))
+def getIdByName(req, nombre):
+    productoId = Producto.objects.only('id').get(nombre = nombre).id
+    return Response(productoId, status=200)
+
+@api_view(('PUT',))
+def putCantidad(req, pk, cantidad):
+    producto = Producto.objects.filter(pk=pk)
+    producto.update(cantidadVendido=cantidad)
+    return HttpResponse(status=status.HTTP_201_CREATED)
