@@ -106,13 +106,17 @@ export const User = () => {
       console.log(text)
       text = text.slice(0, -1)
       return text
-  }
+    }
     
+    const refresh = () => {
+      window.location.reload()
+    }
+
     const postProductoOnCarro = async () => {
       let productoTemporal = []
       let cantidades = []
       let ids = []
-      values.map((loc, index) => {
+      values.map(loc => {
           ids.push(loc.id.toString())
           cantidades.push(loc.value)
       })
@@ -144,7 +148,7 @@ export const User = () => {
           <div className="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <Link class="nav-link active" to="/User" onClick={e => getProductos()}>Home
+                <Link class="nav-link active" to="/User" onClick={e => getProductos()} >Home
                   <span class="visually-hidden">(current)</span>
                 </Link>
               </li>
@@ -156,7 +160,7 @@ export const User = () => {
                   state: values
                 }}
                 onClick={postProductoOnCarro}
-                onAuxClick={e => window.location.reload(false)}
+                onAuxClick={e => refresh()}
                 >COMPRAR
                 <span class="visually-hidden">(current)</span>
                 </Link>
@@ -171,7 +175,7 @@ export const User = () => {
         </div>
       </nav>
       { window.location.href === 'http://localhost:3000/User' &&
-      <div className="col-md-8">
+      <div className="col-md-12">
         <table className="table table-striped">
             <thead>
                 <tr>

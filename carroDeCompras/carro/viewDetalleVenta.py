@@ -96,6 +96,3 @@ def ventasUltimosTreintaDias(req):
     detalle = DetalleVentas.objects.filter(fechaDeVenta__range=[str(fechaInicial), str(fechaFinal)])
     serializer = DetalleVentasSerializer(detalle, many=True)
     return JsonResponse(serializer.data, safe=False)
-
-
-

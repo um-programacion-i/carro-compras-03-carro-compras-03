@@ -8,7 +8,6 @@ class Distribuidor(models.Model):
 
     def __str__(self) -> str:
         return str(self.nombre)
-# Create your models here.
 
 
 class Producto(models.Model):

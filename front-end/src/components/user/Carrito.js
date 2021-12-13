@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Cookies from 'universal-cookie'
 import axios from 'axios'
-import { Link, useHistory } from 'react-router-dom'
-import { Redirect } from "react-router-dom";
+import { useHistory } from 'react-router-dom'
 
 export const Carrito = () => {
     const urlCDC = process.env.REACT_APP_CDC
@@ -10,14 +9,14 @@ export const Carrito = () => {
     const [listaProd, setlistaProd] = useState([])
     const [propiedadesProd, setPropiedadesProd] = useState('')
     const cookies = new Cookies()
+    const history = useHistory()
     var today = new Date()
-    const [hasAlreadyReload, setHasAlreadyReload] = useState(false);
     
 
     const getCarrito = async () => {
         await axios.get(urlCDC+'/carro/carritoByUser/'+ cookies.get('id') +'/')
         .then(res => {
-            setlistaProd(res.data.sort((a, b) => a.id - b.id))
+           setlistaProd(res.data.sort((a, b) => a.id - b.id))
         })
         console.log(listaProd, 'vacio?')
     }
@@ -26,7 +25,6 @@ export const Carrito = () => {
         getCarrito()
     }, [])
 
-    
 
     const infoProd = (nombre, cantidad, precio) => {
         setPropiedadesProd([nombre, cantidad, precio])
@@ -51,19 +49,9 @@ export const Carrito = () => {
         await getCarrito()
     }
 
-    window.onbeforeunload = function (evt) {
-        var message = 'Are you sure you want to leave?';
-        if (typeof evt == 'undefined') {
-          evt = window.event;
-        }
-        if (evt) {
-          evt.returnValue = message;
-        }
-        return message;
-      }
-
     const comprar = async ()=>{
         const estadoCompra = window.confirm('Desea comprar estos productos?')
+        console.log('ID DE USUARIO: ', cookies.get('id'))
         if(estadoCompra){
             let cantidad = []
             let nombres = []
@@ -85,11 +73,13 @@ export const Carrito = () => {
             for(let valor of ids){
                 console.log(valor, 'valores')
             }
+            let id_user = cookies.get('id')
+            console.log(id_user)
             axios.post(urlCDC+'/carro/ventas/', 
             {
-                usuario: parseInt(cookies.get('id')),
+                usuario_id: id_user,
                 productosId: ids,
-                cantidad: cantidad,
+                cantidad: cantidad, 
                 precioTotal: precioFinal,
                 fechaDeVenta: `${today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()}`
             })
@@ -100,13 +90,16 @@ export const Carrito = () => {
                 let cantidadades = cantidad.shift()
                 axios.put(urlPROD+'/producto/putCantidad/'+id+'/'+cantidadades+'/')
             }
+            listaProd.map(prod => {
+                axios.delete(urlCDC+'/carro/singlecarrito/'+prod.id+'/')
+            })
+            history.push('/User')
         }
     }
 
     return (
         <>
-        {hasAlreadyReload && <Redirect from="/Carrito" to="/Carrito" />}
-        <div className="col-md-8">
+        <div className="col-md-12">
             <table className="table table-striped">
                 <thead>
                     <tr>
