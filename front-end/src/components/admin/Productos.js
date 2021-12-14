@@ -16,7 +16,8 @@ export const Productos = () => {
         nombre : "",
         descripcion: "",
         precio: "",
-        cantidadVendida: ""
+        cantidadVendido: "",
+        idDistribuidor_id: ""
     })
 
     const [listaProd, setlistaProd] = useState([])
@@ -34,10 +35,12 @@ export const Productos = () => {
         if(cookies.get('nombre')){
             if(cookies.get('tipo') === 'false'){
                 history.push('/User');
+                
             }
         }
         if(!cookies.get('nombre')){
             history.push('./');
+            
             }
         }
     
@@ -45,6 +48,9 @@ export const Productos = () => {
     useEffect(() => {
         checkLogin()
     })
+
+
+    
 
     const borrarProd = async(id) => {
         const borrar = window.confirm('Borrar?')
@@ -63,7 +69,8 @@ export const Productos = () => {
                 nombre: response.data.nombre,
                 descripcion: response.data.descripcion,
                 precio: response.data.precio,
-                cantidadVendido: response.data.cantidadVendida
+                cantidadVendido: response.data.cantidadVendido,
+                idDistribuidor_id: response.data.idDistribuidor_id
             })
         })
     }
@@ -82,12 +89,19 @@ export const Productos = () => {
     const botonCrear = async(e) => {
         e.preventDefault()
         console.log(productos)
+
+        if (productos.cantidadVendido < 0 || productos.idDistribuidor_id < 0 || productos.precio <0) {
+            alert('No pueden haber campos menores a 0')
+        } else {
+
         if (!editar){
             await axios.post(urlPROD+'/producto/postProducto/', 
                    {nombre: productos.nombre, 
                    descripcion: productos.descripcion,
                    precio: productos.precio,
-                   cantidadVendido: productos.cantidadVendida 
+                   cantidadVendido: productos.cantidadVendido,
+                   idDistribuidor_id: productos.idDistribuidor_id
+                   
                    }
             ).then(response => {
             console.log(response.data)
@@ -99,18 +113,21 @@ export const Productos = () => {
                 nombre: productos.nombre, 
                 descripcion: productos.descripcion,
                 precio: productos.precio,
-                cantidadVendido: productos.cantidadVendida
+                cantidadVendido: productos.cantidadVendido,
+                idDistribuidor_id: productos.idDistribuidor_id
             })
             setEditar(false)
             setId("")
         }
         console.log(productos)
         await getProductos()
-        setProductos({cantidadVendida: 0,
+        setProductos({cantidadVendido: 0,
                       nombre: "",
                       precio: 0,
-                      descripcion: ""
+                      descripcion: "",
+                      idDistribuidor_id: 0
                     })
+    }
     }
 
     const cambiarEstado = async(id) => {
@@ -144,6 +161,7 @@ export const Productos = () => {
                     <div className="form-group">
                         <input
                         type="number"
+                        min="0"
                         placeholder="Precio"
                         className="form-control"
                         onChange={e => setProductos({...productos, precio: e.target.value})}
@@ -153,10 +171,21 @@ export const Productos = () => {
                     <div className="form-group">
                         <input
                         type="number"
+                        min="0"
                         placeholder="Cantidad Vendida"
                         className="form-control"
-                        onChange={e => setProductos({...productos, cantidadVendida: e.target.value})}
-                        value={productos.cantidadVendida}
+                        onChange={e => setProductos({...productos, cantidadVendido: e.target.value})}
+                        value={productos.cantidadVendido}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input
+                        type="number"
+                        min="0"
+                        placeholder="Id Distribuidor"
+                        className="form-control"
+                        onChange={e => setProductos({...productos, idDistribuidor_id: e.target.value})}
+                        value={productos.idDistribuidor_id}
                         />
                     </div>
                     <button 

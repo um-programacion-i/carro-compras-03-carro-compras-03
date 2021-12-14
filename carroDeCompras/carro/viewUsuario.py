@@ -35,13 +35,14 @@ def listarusuarios(req, pk):
         #usuario = Usuario.objects.all()
         serializer = UsuarioSerializer(usuario, many=True)
         print(serializer.data)
-        return JsonResponse(serializer.data, status=200, safe=False)
+        return JsonResponse(serializer.data[0], status=200, safe=False)
     if req.method == 'PUT':
+        usuario = Usuario.objects.get(pk=pk)
         data = JSONParser().parse(req)
         serializer = UsuarioSerializer(usuario, data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data[0], status=status.HTTP_201_CREATED)
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif req.method == 'DELETE':
         usuario.delete()

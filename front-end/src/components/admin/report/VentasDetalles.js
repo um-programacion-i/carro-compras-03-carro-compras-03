@@ -102,6 +102,7 @@ export const VentasDetalles = () => {
 
     return (
         <>
+        
         <br/>
         <h1>Ventas</h1>
         <div className="card border-primary mb-20" style={{ alignSelf: "center" }}>

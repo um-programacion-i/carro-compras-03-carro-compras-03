@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-from .models import DetalleVentas
+from .models import DetalleVentas, Usuario
 from .serializer import DetalleVentasSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -19,11 +19,16 @@ def getAllVentas(req):
 
     elif req.method == 'POST':
         data = JSONParser().parse(req)
-        serializer = DetalleVentasSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=200)
-        return HttpResponse(status=204)
+        print(data)
+        detalle= DetalleVentas(
+        productosId=data["productosId"],
+        cantidad=data["cantidad"], 
+        precioTotal= data["precioTotal"],
+        fechaDeVenta=data["fechaDeVenta"],
+        usuario_id=data["usuario_id"]
+        )
+        detalle.save()
+        return HttpResponse(status=201)
 
 
 @api_view(('GET',))

@@ -86,6 +86,11 @@ export const Usuarios = () => {
 
     const botonCrear = async(e) => {
         e.preventDefault()
+
+        if (usuarios.tipo !== "true" && usuarios.tipo !== "false") {
+            alert('El tipo solo puede ser "true" o "false".')
+        } else {
+
         if (!editar){
             await axios.post(urlCDC+'/carro/users/', 
                    {nombre : usuarios.nombre,
@@ -118,6 +123,7 @@ export const Usuarios = () => {
                      tipo : "",
             })
     }
+    } 
 
     const cambiarEstado = async(id) => {
         await axios.put(urlCDC+'/carro/cambiarEstadoUsuario/'+id+'/')

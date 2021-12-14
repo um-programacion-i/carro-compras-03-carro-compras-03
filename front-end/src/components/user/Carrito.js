@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 export const Carrito = () => {
     const urlCDC = process.env.REACT_APP_CDC
     const urlPROD = process.env.REACT_APP_PROD
+    const [isLoading, setIsLoading] = useState(true)
     const [listaProd, setlistaProd] = useState([])
     const [propiedadesProd, setPropiedadesProd] = useState('')
     const cookies = new Cookies()
@@ -21,9 +22,19 @@ export const Carrito = () => {
         console.log(listaProd, 'vacio?')
     }
 
-    useEffect(()=>{
-        getCarrito()
+    useEffect(()=> {
+        setIsLoading(true)
+        setTimeout(() => {
+            getCarrito()
+            setIsLoading(false)
+            }, 1000)
+        
+        
     }, [])
+
+    if (isLoading) {
+        return <div>Recuperando carrito...</div>
+    }
 
 
     const infoProd = (nombre, cantidad, precio) => {
@@ -75,14 +86,15 @@ export const Carrito = () => {
             }
             let id_user = cookies.get('id')
             console.log(id_user)
-            axios.post(urlCDC+'/carro/ventas/', 
-            {
+            let data = {
                 usuario_id: id_user,
                 productosId: ids,
                 cantidad: cantidad, 
                 precioTotal: precioFinal,
                 fechaDeVenta: `${today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()}`
-            })
+            }
+            console.log(data)
+            axios.post(urlCDC+'/carro/ventas/', data)
             .then(res => {
                 console.log(res.data)
             })

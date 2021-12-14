@@ -32,21 +32,21 @@ def postDistribuidor(req):
 @renderer_classes((JSONRenderer,))
 def listarDistribuidor(req, pk):
     try:
-        distribuidor = Distribuidor.objects.get(pk=pk)
+        distribuidor = [Distribuidor.objects.get(pk=pk)]
     except Distribuidor.DoesNotExist:
         return HttpResponse(status=404)
     if req.method == 'GET':
         serializer = DistribuidorSerializer(distribuidor, many=True)
-        return Response(distribuidor)
+        return Response(serializer.data[0], status=200)
     if req.method == 'PUT':
         data = JSONParser().parse(req)
-        serializer = DistribuidorSerializer(distribuidor, data=data)
+        serializer = DistribuidorSerializer(distribuidor[0], data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif req.method == 'DELETE':
-        distribuidor.delete()
+        distribuidor[0].delete()
         return HttpResponse(status=204)
 
 

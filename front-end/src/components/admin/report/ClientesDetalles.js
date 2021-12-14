@@ -67,6 +67,7 @@ export const ClientesDetalles = () => {
     }
     
     const getUsuariosById = (id, ventaId) =>{
+        console.log(id)
         setVentasId('')
         axios.get(urlCDC+'/carro/singleuser/'+id+'/')
         .then(res => {
@@ -166,7 +167,6 @@ export const ClientesDetalles = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Cantidad por producto</th>
                             <th>Precio Total</th>
                             <th>Fecha</th>
                             <th>Productos comprados</th>
@@ -177,7 +177,6 @@ export const ClientesDetalles = () => {
                         {ventasDetalles.map((venta) => (
                             <tr key={venta.id}>
                                 <td>{venta.id}</td>
-                                <td>{formatList(venta.cantidad)}</td>
                                 <td>{venta.precioTotal}</td>
                                 <td>{venta.fechaDeVenta}</td>
                                 <td>
@@ -190,10 +189,13 @@ export const ClientesDetalles = () => {
                                             <Collapse isOpened={stateProductos}>
                                                 <ol>
                                                     {productosA.map((producto, index)=>(
+                                                        
                                                         <li key={producto.id}>
                                                             Nombre: {producto.nombre}
                                                             <br/>
-                                                            Precio: {producto.precio}
+                                                            Precio c/u: {producto.precio}
+                                                            <br/>
+                                                            Cantidad: {venta.cantidad[index]}
                                                         </li>
                                                     ))}
                                                 </ol>
@@ -210,13 +212,11 @@ export const ClientesDetalles = () => {
                                         { ventasId === venta.id &&
                                                 <Collapse isOpened={stateUsuarios}>
                                                         <p>
-                                                        {usuarios.map(usuario=>(
-                                                            <p key={usuario.id}>
-                                                                Nombre: {usuario.nombre}
-                                                                <br />
-                                                                Email: {usuario.email}
-                                                            </p>
-                                                        ))}
+                                                        Nombre: {usuarios.nombre}
+                                                        <br/>
+                                                        Apellido: {usuarios.apellido}
+                                                        <br/>
+                                                        Email: {usuarios.email}
                                                         </p>
                                                 </Collapse>
                                         }
