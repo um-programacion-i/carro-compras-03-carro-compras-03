@@ -11,6 +11,8 @@ import {VentasDetalles} from './components/admin/report/VentasDetalles'
 import {DistribuidorDetalles} from './components/admin/report/DistribuidorDetalles'
 import {User} from './components/user/User'
 import {Carrito} from './components/user/Carrito'
+import {ComprasDetalles} from './components/user/ComprasDetalles'
+
 
 
 
@@ -85,6 +87,10 @@ function App() {
               <Route exact path="/Carrito" component={Carrito}>
                 <User />
                 <Carrito />
+              </Route>
+              <Route exact path="/ComprasDetalles" component={ComprasDetalles}>
+                <User />
+                <ComprasDetalles />
               </Route>
             </Switch>
         </BrowserRouter>

@@ -48,10 +48,12 @@ export const ClientesDetalles = () => {
     const formatList = (list) => {
         let text = ''
         for (let item of list) {
-            text += item + ', '
+            if(item.toString().slice(-1) !== 0){
+              text += item + ','
+            }
         }
-        text = text.slice(0, -2)
-        console.log('Transformacion de id', text)
+        console.log(text)
+        text = text.slice(0, -1)
         return text
     }
 

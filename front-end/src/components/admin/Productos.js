@@ -80,7 +80,6 @@ export const Productos = () => {
         .then(response => {
             setlistaProd(response.data.sort((a, b) => a.id - b.id))
         })
-        console.log(listaProd)
     }
 
     useEffect(() => {
@@ -108,7 +107,6 @@ export const Productos = () => {
             console.log(response.data)
             })
         }else{
-            console.log('ACAAAAAAAAAAAAAAAAAAAA')
             await axios.put(urlPROD+'/producto/tomar_uno_prod/'+id+'/',
             {
                 nombre: productos.nombre, 
@@ -197,7 +195,7 @@ export const Productos = () => {
                     </button>
                 </form>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
                     <table className="table table-striped">
                         <thead>
                             <tr>
@@ -218,24 +216,24 @@ export const Productos = () => {
                                     <td>{prod.nombre}</td>
                                     <td>{prod.descripcion}</td>
                                     <td>{prod.precio}</td>
-                                    <td>{parseInt(prod.idDistribuidor_id)}</td>
+                                    <td>{prod.idDistribuidor_id}</td>
                                     <td>{prod.cantidadVendido}</td>
                                     <td>{prod.disponible.toString()}</td>
                                     <td>
                                         <div className="btn-group-vertical">
                                         <button
-                                        className="btn btn-secondary btn-sm btn-block"
+                                        className="btn btn-secondary btn-sm col-md-3"
                                         onClick={e => editarProd(prod.id)}>
                                             Editar
                                         </button>
                                         <button 
-                                        className="btn btn-danger btn-sm btn-block"
+                                        className="btn btn-danger btn-sm col-md-3"
                                         onClick={e => borrarProd(prod.id)}
                                         >
                                             Eliminar
                                         </button>
                                         <button 
-                                        className="btn btn-warning btn-sm btn-block"
+                                        className="btn btn-warning btn-sm col-md-3"
                                         onClick={e => cambiarEstado(prod.id)}
                                         >
                                             Habilitar/Deshabilitar

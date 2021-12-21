@@ -31,20 +31,23 @@ export const VentasDetalles = () => {
         console.log(endDate.getFullYear(), 'dia fin')
     }
 
-    const getVentas = () => {
-        axios.get(urlCDC+'/carro/ventas/')
+    const getVentas = async () => {
+        await axios.get(urlCDC+'/carro/ventas/')
         .then(res => {
             setventasDetalles(res.data.sort((a, b) => a.id - b.id))
         })
-        
+        console.log(ventasDetalles, 'estas son las ventas')
     }
 
     const formatList = (list) => {
         let text = ''
         for (let item of list) {
-            text += item + ', '
+            if(item.toString().slice(-1) !== 0){
+              text += item + ','
+            }
         }
-        text = text.slice(0, -2)
+        console.log(text)
+        text = text.slice(0, -1)
         return text
     }
 
@@ -147,13 +150,12 @@ export const VentasDetalles = () => {
                         <th>ID</th>
                         <th>ID Usuario</th>
                         <th>Productos</th>
-                        <th>Cantidades</th>
                         <th>Precio Total</th>
                         <th>Fecha Venta</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {ventasDetalles.map(venta => (
+                    {ventasDetalles.map((venta) => (
                         <tr key={venta.id}>
                             <td>{venta.id}</td>
                             <td>{venta.usuario_id}</td>
@@ -165,9 +167,13 @@ export const VentasDetalles = () => {
                                         {id === venta.productosId &&
                                         <Collapse isOpened={state}>
                                         <p>  
-                                        {productosA.map(prd => (
+                                        {productosA.map((prd, index) => (
                                             <li key={prd.id}>
-                                                {prd.nombre}
+                                                Nombre : {prd.nombre}
+                                                <br />
+                                                Precio c/u: {prd.precio}
+                                                <br/>
+                                                Cantidad: {venta.cantidad[index]}
                                             </li>
                                         ))}
                                         </p>
@@ -178,7 +184,6 @@ export const VentasDetalles = () => {
                                     onClick={e=>setState(false)}>Colapsar</button>
                                 </div>
                             </td>
-                            <td>{formatList(venta.cantidad)}</td>
                             <td>{venta.precioTotal}</td>
                             <td>{venta.fechaDeVenta}</td>
                         </tr>

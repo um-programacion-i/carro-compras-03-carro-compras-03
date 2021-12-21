@@ -166,6 +166,15 @@ export const User = () => {
                 </Link>
               </li>
               }
+              {window.location.href === 'http://localhost:3000/User' && /*Tuve que volver a poner este href porque si lo coloco en el de arriba, 
+                                                                         el boton aparece debajo del boton comprar */
+              <li class="nav-item">
+              <Link class="nav-link active" to="/ComprasDetalles" onClick={e => getProductos()} >
+                TUS COMPRAS 
+                <span class="visually-hidden">(current)</span>
+              </Link>
+              </li>
+              }
             </ul>
             <form className="d-flex">
               <input className="form-control me-sm-2" type="text" placeholder="Buscar productos" value={inputValue} onChange={handleInputChange}/>

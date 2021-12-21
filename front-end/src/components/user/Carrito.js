@@ -164,7 +164,6 @@ export const Carrito = () => {
                             </button>
                         </td>
                     </th>
-                
                 </tbody>
             </table>
         </div>

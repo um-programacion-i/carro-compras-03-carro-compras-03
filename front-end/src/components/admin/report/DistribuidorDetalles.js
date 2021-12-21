@@ -7,25 +7,12 @@ import {Collapse} from 'react-collapse';
 export const DistribuidorDetalles = () => {
 
     const urlPROD = process.env.REACT_APP_PROD
-
     const [distribuidorDetalles, setDistribuidorDetalles] = useState([])
     const [productosA, setProductos] = useState([])
     const [state, setState] = useState(false)
-    
-    const [startDate, setStartDate] = useState(new Date())
-    const [endDate, setEndDate] = useState(new Date())
     const [id, setId] = useState("")
 
-
-
-    const handleChangeStart = (date) => {
-        setStartDate(date)
-    }
-
-    const handleChangeEnd = (date) => {
-        setEndDate(date)
-    }
-
+    
     const getDistribuidor = () => {
         axios.get(urlPROD+'/producto/distribuidores/')
         .then(res => {
