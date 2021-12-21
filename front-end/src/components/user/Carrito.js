@@ -60,10 +60,6 @@ export const Carrito = () => {
         await getCarrito()
     }
 
-    const recuperarIds = () => {
-        
-    }
-
     const comprar = async ()=>{
         const estadoCompra = window.confirm('Desea comprar estos productos?')
         console.log('ID DE USUARIO: ', cookies.get('id'))
@@ -164,7 +160,7 @@ export const Carrito = () => {
                         </td>
                         <td>
                             <button className='btn btn-lg btn-danger btn-block' style={{alignContent : 'center'}} type='button' onClick={e => eliminarCarroTotal()} onAuxClick={e => window.location.reload(false)}>
-                                Eliminar Carro
+                                Vaciar Carro
                             </button>
                         </td>
                     </th>
