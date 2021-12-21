@@ -4,7 +4,6 @@ import {Login} from './components/Login'
 import {Admin} from './components/admin/Admin'
 import {Productos} from './components/admin/Productos'
 import {Usuarios} from './components/admin/Usuarios'
-import {Reportes} from './components/admin/Reportes'
 import {Distribuidores} from './components/admin/Distribuidores'
 import {ClientesDetalles} from './components/admin/report/ClientesDetalles'
 import {VentasDetalles} from './components/admin/report/VentasDetalles'
@@ -60,10 +59,6 @@ function App() {
               <Route exact path="/Admin/Productos" component={Productos}>
                 <Admin/>
                 <Productos/>
-              </Route>
-              <Route exact path="/Admin/Reportes" component={Reportes}>
-                <Admin/>
-                <Reportes/>
               </Route>
               <Route exact path="/Admin/Usuarios" component={Usuarios}>
                 <Admin />

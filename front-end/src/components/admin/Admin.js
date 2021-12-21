@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from "react-router-dom"
 import {Link} from 'react-router-dom'
 import Cookies from 'universal-cookie'
@@ -8,6 +8,10 @@ export const Admin = () => {
     const cookies = new Cookies()
 
     const history = useHistory()
+
+    let divReportes = React.createRef()
+
+    const [state, setstate] = useState(false)
 
     const checkLogin = () => {
 
@@ -25,6 +29,10 @@ export const Admin = () => {
             }
         }
     
+    const cambiarEstado = () => {
+        if(state === false) setstate(true)
+        else setstate(false)
+    }
 
     useEffect(() => {
         checkLogin()
@@ -65,10 +73,28 @@ export const Admin = () => {
                         Usuarios
                     </Link>
                     </li>
-                    <li className="nav-item">
-                    <Link className="nav-link active" aria-current="page" to="/Admin/Reportes">
-                        Reportes
-                    </Link>
+                    
+                    <li className="nav-item dropdown" onClick={e => cambiarEstado()}>
+                        <Link
+                            className="nav-link dropdown-toggle show"
+                            data-bs-toggle="dropdown"
+                            role="button"
+                        >
+                            Reportes
+                        </Link>
+                    { !state &&
+                        <div className="dropdown-menu show" data-bs-popper="none">
+                            <Link className="dropdown-item" to = '/Admin/Reportes/VentasDetalles'>
+                            Ventas
+                            </Link>
+                            <Link className="dropdown-item" to = '/Admin/Reportes/DistribuidorDetalles'>
+                            Detalles de distribuidor
+                            </Link>
+                            <Link className="dropdown-item" to = '/Admin/Reportes/ClientesDetalles'>
+                            Detalles de las compras de Clientes
+                            </Link>
+                        </div>
+                    }
                     </li>
                 </ul>
                 </div>
