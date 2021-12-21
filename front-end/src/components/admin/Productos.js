@@ -80,6 +80,7 @@ export const Productos = () => {
         .then(response => {
             setlistaProd(response.data.sort((a, b) => a.id - b.id))
         })
+        console.log(listaProd)
     }
 
     useEffect(() => {
@@ -217,7 +218,7 @@ export const Productos = () => {
                                     <td>{prod.nombre}</td>
                                     <td>{prod.descripcion}</td>
                                     <td>{prod.precio}</td>
-                                    <td>{prod.idDistribuidor_id}</td>
+                                    <td>{parseInt(prod.idDistribuidor_id)}</td>
                                     <td>{prod.cantidadVendido}</td>
                                     <td>{prod.disponible.toString()}</td>
                                     <td>

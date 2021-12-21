@@ -60,6 +60,10 @@ export const Carrito = () => {
         await getCarrito()
     }
 
+    const recuperarIds = () => {
+        
+    }
+
     const comprar = async ()=>{
         const estadoCompra = window.confirm('Desea comprar estos productos?')
         console.log('ID DE USUARIO: ', cookies.get('id'))
@@ -79,10 +83,6 @@ export const Carrito = () => {
                 .then(res =>{
                     ids.push(parseInt(res.data))
                 })
-            }
-            console.log(cantidad)
-            for(let valor of ids){
-                console.log(valor, 'valores')
             }
             let id_user = cookies.get('id')
             console.log(id_user)
@@ -105,6 +105,22 @@ export const Carrito = () => {
             listaProd.map(prod => {
                 axios.delete(urlCDC+'/carro/singlecarrito/'+prod.id+'/')
             })
+            history.push('/User')
+        }
+    }
+
+    const eliminarCarroTotal = async () => {
+        let borrar = window.confirm('Esta seguro que desea vaciar el carro?')
+        if(borrar){
+            let nombres = []
+            let ids =  []
+            listaProd.map(prd => {
+                nombres.push(prd.productos)
+                ids.push(prd.id)
+            })
+            for(let id of ids){
+                await axios.delete(urlCDC+'/carro/singlecarrito/'+parseInt(id)+'/')
+            }
             history.push('/User')
         }
     }
@@ -144,6 +160,11 @@ export const Carrito = () => {
                         <td>
                             <button className='btn btn-lg btn-primary btn-block' style={{alignContent : 'center'}} type='button' onClick={e => comprar()} onAuxClick={e => window.location.reload(false)}>
                                 Comprar
+                            </button>
+                        </td>
+                        <td>
+                            <button className='btn btn-lg btn-danger btn-block' style={{alignContent : 'center'}} type='button' onClick={e => eliminarCarroTotal()} onAuxClick={e => window.location.reload(false)}>
+                                Eliminar Carro
                             </button>
                         </td>
                     </th>

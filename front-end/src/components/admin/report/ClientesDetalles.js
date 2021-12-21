@@ -32,8 +32,8 @@ export const ClientesDetalles = () => {
     }
 
     
-    const getVentas = () => {
-        axios.get(urlCDC+'/carro/ventas/')
+    const getVentas = async () => {
+        await axios.get(urlCDC+'/carro/ventas/')
         .then(res => {
             setVentasDetalles(res.data.sort((a, b) => a.id - b.id))
         })
@@ -51,19 +51,21 @@ export const ClientesDetalles = () => {
             text += item + ', '
         }
         text = text.slice(0, -2)
+        console.log('Transformacion de id', text)
         return text
     }
 
     const getProductosById = (id) => {
+        console.log('Id que llega ', id)
         let ids = formatList(id)
-        console.log(ids)
+        console.log(ids, 'id de producto')
         axios.get(urlPROD+'/producto/getVariosProductos/' + ids + '/')
         .then(res => {
             setProductos(res.data)
         })
         setStateProductos(true)
         setId(id)
-        console.log('productos')
+        console.log('productos', productosA)
     }
     
     const getUsuariosById = (id, ventaId) =>{
@@ -183,7 +185,7 @@ export const ClientesDetalles = () => {
                                 <div className="btn-group-vertical">
                                         <button className="btn btn-secondary col-md-3"
                                         type='reset'
-                                        onClick={(e)=>getProductosById(venta.productosId, e)}
+                                        onClick={(e)=>getProductosById(venta.productosId)}
                                         value={productosA}>Expandir</button>
                                             {id === venta.productosId &&
                                             <Collapse isOpened={stateProductos}>

@@ -85,8 +85,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME' : 'carroCompras',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'carrodb',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '5432'
     }
 }

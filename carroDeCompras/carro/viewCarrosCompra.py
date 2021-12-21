@@ -24,29 +24,22 @@ def carritoList(req):
         return HttpResponse(status=204)
 
 
-@api_view(('GET', 'PUT', 'DELETE'))
+@api_view(('GET', 'DELETE'))
 @renderer_classes((JSONRenderer,))
 def un_carrito(req, pk):
     try:
-        carrito = CarrosCompra.objects.get(pk=pk)
+        carrito = [CarrosCompra.objects.get(pk=pk)]
+        print(carrito)
     except CarrosCompra.DoesNotExist:
         return HttpResponse(status=404)
 
     if req.method == 'GET':
-        serializer = CarrosCompraSerializer([carrito], many=True)
+        serializer = CarrosCompraSerializer(carrito, many=True)
         return JsonResponse(serializer.data[0], status=200, safe=False)
 
-    elif req.method == 'PUT':
-        data = JSONParser().parse(req)
-        print(carrito)
-        serializer = CarrosCompraSerializer(carrito, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     elif req.method == 'DELETE':
-        carrito.delete()
+        print(carrito)
+        carrito[0].delete()
         return HttpResponse(status=204)
 
 @api_view(('GET',))
