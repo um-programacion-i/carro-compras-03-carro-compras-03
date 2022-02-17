@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+    frontend:
+        stdin_open: true
+        build: ./front-end/
+        container_name: frontend
+        command: npm start
+        volumes:
+            - ./front-end:/front-end
+        ports:
+            - "3000:3000"
+        depends_on:
+            - carrodb
+            - productosdb
+            - carrodecompras
+            - productos
+
+    carrodecompras: 
+          build: ./carroDeCompras/
+          container_name: carrodecompras
+          command: python manage.py runserver 0.0.0.0:8000
+          volumes:
+              - ./carroDeCompras:/carroDeCompras
+          ports:
+              - "8000:8000"
+          tty: true
+          depends_on:
+              - carrodb
+
+    productos:
+          build: ./productos/
+          container_name: productos
+          command: python manage.py runserver 0.0.0.0:8001
+          volumes:
+              - ./productos:/productos
+          ports:
+              - "8001:8001"
+          tty: true
+          depends_on:
+              - productosdb
+
+    carrodb:
+        image: postgres:14
+        container_name: carrodb
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=carroCompras
+        volumes:
+          - ./databases/carrodecompras-data:/var/lib/postgresql/data/
+        ports:
+          - "5432:5432"
+
+    productosdb:
+        image: postgres:14
+        container_name: productosdb
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=productos
+        volumes:
+          - ./databases/productos-data:/var/lib/postgresql/data/
+        ports:
+          - "5433:5432"
+
+    nginex:
+        image: nginx:latest
+        container_name: nginex
+        ports:
+          - "8080:8080"
+        volumes:
+          - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
